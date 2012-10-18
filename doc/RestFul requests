@@ -1,0 +1,4 @@
+Pour ajouter :
+
+curl -X put http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/francis/ -v -d '{"password":"123","realname":"Francis","email":"fr@fr.com","publicvisible":"1"}' -H "Accept: application/json" -H "Content-type: application/json"
+
