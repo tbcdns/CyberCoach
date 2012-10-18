@@ -3,5 +3,5 @@ class UsersController < ApplicationController
   end
 
 
-# TODO test
+# TODO test, signup
 end
