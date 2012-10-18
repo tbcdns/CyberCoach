@@ -5,7 +5,9 @@ gem 'rails', '3.2.8'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+group :development do
 gem 'sqlite3'
+end
 
 gem 'json'
 
@@ -27,6 +29,10 @@ end
 
 group :test do
   gem 'capybara', '1.1.2'
+end
+
+group :production do
+  gem 'pg', '0.14.1'
 end
 
 gem 'jquery-rails'
