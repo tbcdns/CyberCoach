@@ -31,4 +31,5 @@ capybara-*.html
 **.orig
 rerun.txt
 pickle-email-*.html
+.idea
 >>>>>>> 5df2f24bf457400b6c90afc7d76846767cc9e602
