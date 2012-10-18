@@ -1,6 +1,6 @@
 <% require 'net/http'
 
-    uri = URI.parse('http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/blabla/')
+    uri = URI.parse('http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/')
     http = Net::HTTP.new(uri.host, uri.port)
     response = http.request(Net::HTTP::Get.new(uri.request_uri))
      %>
@@ -12,7 +12,5 @@
   <p style="text-align: center;">The new social platform to organize your sport events.</p>
   <%= link_to 'Register', signup_path, :class => 'btn btn-large btn-primary' %>
   <a class="btn btn-large btn-primary">Login</a>
-  test
-
 </div>
 <%=  response.body %>
