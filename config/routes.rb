@@ -1,7 +1,8 @@
 CyberCoach::Application.routes.draw do
 
-  get "users/new"
-  get "users/index"
+
+
+  resources :users
 
   get "static/home"
 
