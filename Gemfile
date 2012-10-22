@@ -5,9 +5,9 @@ gem 'rails', '3.2.8'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-#In development we use sqlite3
+#In development we use mysql
 group :development do
-  gem 'sqlite3'
+  gem 'mysql2'
 end
 
 #In production (heroku) PostgreSQL
@@ -17,6 +17,7 @@ end
 
 gem 'json'
 gem 'activeresource', :require => 'active_resource'
+gem 'rake'
 
 # Gems used only for assets and not required
 # in production environments by default.

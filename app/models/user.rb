@@ -32,10 +32,11 @@ class User < ActiveResource::Base
   self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/"
 
   schema do
-    string 'realname', 'email', 'password'
+    string 'username', 'realname', 'email', 'password'
     integer 'publicvisible'
   end
   validates :username,  :presence => true, :length => { :maximum => 50 }
   validates :password, :presence => true, :length => { :minimum => 6 }
   validates :email, :presence => true, :format => { :with => /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
 end
+
