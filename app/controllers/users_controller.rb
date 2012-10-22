@@ -18,12 +18,14 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user]).put(:username)
-    if @user.save
-      redirect_to @user
-    else
-      render 'new'
-    end
+
+
+    #@user = User.new(params[:user]).put(params[:user][:username].split('//.'))
+    #if @user.save
+     # redirect_to @user
+    #else
+     # render 'new'
+    #end
   end
 
 

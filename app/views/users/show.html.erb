@@ -1,0 +1,9 @@
+<div class="center hero-unit">
+
+  <h1><%=  @user.username %></h1>
+  <% if @user.publicvisible.equal?(2) %>
+  Email : <%= @user.email %><br>
+  Real name : <%= @user.realname %>
+  <% end %>
+
+</div>
