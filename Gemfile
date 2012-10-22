@@ -17,7 +17,6 @@ end
 
 gem 'json'
 gem 'activeresource', :require => 'active_resource'
-gem 'reactive_resource'
 
 # Gems used only for assets and not required
 # in production environments by default.
