@@ -32,7 +32,7 @@ class User < ActiveResource::Base
   self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/"
 
   schema do
-    string 'username', 'email', 'password'
+    string 'realname', 'email', 'password'
     integer 'publicvisible'
   end
   validates :username,  :presence => true, :length => { :maximum => 50 }
