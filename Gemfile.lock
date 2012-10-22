@@ -144,6 +144,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activeresource
   bootstrap-sass (= 2.1.0.1)
   capybara (= 1.1.2)
   coffee-rails (~> 3.2.1)

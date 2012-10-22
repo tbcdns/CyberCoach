@@ -16,6 +16,7 @@ group :production do
 end
 
 gem 'json'
+gem 'activeresource', :require => 'active_resource'
 
 # Gems used only for assets and not required
 # in production environments by default.
