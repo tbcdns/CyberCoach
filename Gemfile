@@ -7,7 +7,7 @@ gem 'rails', '3.2.8'
 
 #In development we use mysql
 group :development do
-  gem 'mysql2'
+  gem 'mysql'
 end
 
 #In production (heroku) PostgreSQL
@@ -16,7 +16,8 @@ group :production do
 end
 
 gem 'json'
-gem 'activeresource', :require => 'active_resource'
+#gem 'activeresource', :require => 'active_resource'
+gem 'rest-client'
 gem 'rake'
 
 # Gems used only for assets and not required

@@ -18,17 +18,18 @@ class UsersController < ApplicationController
   end
 
   def create
+    require 'rest-client'
+    putrequest = RestClient.put 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+params[:user][:username], {:password => params[:user][:password],:realname => params[:user][:realname],:email => params[:user][:email],:publicvisible => "2"}.to_json, :content_type => :json, :accept => :json
 
+    redirect_to "/users/"+params[:user][:username], flash[:notice] => params[:user][:username]+' sucessfully created'
 
-    @user = User.new(params[:user])
-    if @user.save
-      redirect_to @user
-    else
-      render 'new'
-    end
+    #@user = User.new(params[:user]).put(params[:user][:username])
+
   end
 
-
-# TODO test, signup
-# TODO test fred
+  def destroy
+    require 'rest-client'
+    @user = RestClient.delete 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+params[:id]
+    redirect_to "/users/"
+  end
 end

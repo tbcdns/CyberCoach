@@ -28,6 +28,13 @@ class User < ActiveResource::Base
       end
     end
   end
+  module ClassMethods
+      def custom_method_collection_url(method_name, options = {})
+        prefix_options, query_options = split_options(options)
+        "#{prefix(prefix_options)}#{collection_name}/#{method_name}#{query_string(query_options)}"
+      end
+
+  end
 
   self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/"
 

@@ -1,9 +1,14 @@
 <div class="center hero-unit">
+  <% if flash[:notice] %>
+      <span class="label label-success"><%= flash[:notice] %></span>
+  <% end %>
 
   <h1><%=  @user.username %></h1>
   <% if @user.publicvisible.equal?(2) %>
   Email : <%= @user.email %><br>
   Real name : <%= @user.realname %>
   <% end %>
+  <br>
+  <%= link_to "Delete", @user.username, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'btn btn-large btn-primary'  %>
 
 </div>

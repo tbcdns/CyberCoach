@@ -71,7 +71,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.19)
     multi_json (1.3.6)
-    mysql2 (0.3.11)
+    mysql (2.8.1)
     nokogiri (1.5.5)
     pg (0.14.1)
     polyglot (0.3.3)
@@ -100,6 +100,8 @@ GEM
     rake (0.9.2.2)
     rdoc (3.12)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (2.11.0)
       rspec-core (~> 2.11.0)
       rspec-expectations (~> 2.11.0)
@@ -144,17 +146,17 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activeresource
   bootstrap-sass (= 2.1.0.1)
   capybara (= 1.1.2)
   coffee-rails (~> 3.2.1)
   jquery-rails
   jquery-ui-rails
   json
-  mysql2
+  mysql
   pg (= 0.14.1)
   rails (= 3.2.8)
   rake
+  rest-client
   rspec-rails
   sass-rails (~> 3.2.3)
   uglifier (>= 1.0.3)
