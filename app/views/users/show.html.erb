@@ -3,7 +3,8 @@
   <% if @user.publicvisible.equal?(2) %>
       <p>
   Email : <%= @user.email %><br>
-  Real name : <%= @user.realname %>
+  Real name : <%= @user.realname %><br>
+  Password : <%= @user.password %>
   <% end %>
   <br>
   <%= link_to "Delete", @user.username, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'btn btn-large btn-primary'  %>

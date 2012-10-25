@@ -6,13 +6,13 @@ class SessionsController < ApplicationController
   def create
     begin
       user = User.find(params[:session][:username].downcase)
-      rescue ActiveResource::ResourceNotFound => e
+      rescue Exception => e
         flash[:error] = 'Wrong username/password'
         render 'new'
       else
         if user    #check the password
           sign_in user
-          flash[:success] = 'Welcome back '+current_user.username
+          flash[:success] = 'Welcome back '+current_user.username.to_s
           redirect_to :controller => 'users', :action => 'show', :id => current_user.username
         else
           flash[:error] = 'Wrong username/password'
@@ -23,7 +23,7 @@ class SessionsController < ApplicationController
 
   def destroy
     sign_out
-    flash[:notice] = 'See you soon!'
+    flash[:notice] = 'See you soon !'
     redirect_to root_url
   end
 end
