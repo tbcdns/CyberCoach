@@ -10,3 +10,4 @@ curl -X put http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/Ryan 
                                                                                         "authenticity_token"=>"KJrrX9PDWJfo7D8orQzOds4q5Qqixm9UfUMLFqTp8NY=",
                                                                                         "utf8"=>"✓"}' -H "Accept: application/json" -H "Content-type: application/json"
 
+rails generate controller NAME [action action] [options]

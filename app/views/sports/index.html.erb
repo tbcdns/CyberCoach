@@ -1,0 +1,9 @@
+<div class="hero-unit">
+  <h1>Sports</h1>
+  <p>
+    <% @sports.each do |sport| %>
+        <%= link_to sport.name, './'+sport.name %>
+        <%= sport.uri %><br>
+    <% end %>
+  </p>
+</div>
