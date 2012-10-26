@@ -6,3 +6,7 @@
   <%= link_to 'Register', signup_path, :class => 'btn btn-large btn-primary' %>
   <a class="btn btn-large btn-primary">Login</a>
 </div>
+
+
+<% require 'base64' %>
+<%= Base64.encode64('marc:marco') %>

@@ -1,3 +1,5 @@
+require 'rest-client'
+require 'base64'
 class SessionsController < ApplicationController
   def new
 
@@ -6,6 +8,8 @@ class SessionsController < ApplicationController
   def create
     begin
       user = User.find(params[:session][:username].downcase)
+      digest = Base64.encode64(params[:session][:username].downcase+':'+params[:session][:password])
+      testResponse = RestClient.put 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+params[:session][:username], {:publicvisible => user.publicvisible}.to_json, :content_type => :json, :accept => :json, :Authorization => 'Basic '+digest
       rescue Exception => e
         flash[:error] = 'Wrong username/password'
         render 'new'
