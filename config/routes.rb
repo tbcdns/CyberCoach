@@ -2,7 +2,7 @@ CyberCoach::Application.routes.draw do
 
   get "events/index"
 
-  get "events/new"
+  get "events/add"
 
   get "events/show"
 
@@ -16,7 +16,7 @@ CyberCoach::Application.routes.draw do
   resources :users
   resources :sports
 
-  match '/signup',  :to => 'users#new'
+  match '/signup',  :to => 'users#add'
   # --- SESSIONS ---
   resources :sessions, :only => [:new, :create, :destroy]
 
@@ -78,5 +78,5 @@ CyberCoach::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id))(.:format)'
+  match ':controller(/:action(/:id))(.:format)'
 end

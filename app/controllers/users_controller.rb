@@ -1,6 +1,6 @@
 require 'rest-client'
 class UsersController < ApplicationController
-  def new
+  def add
     @user = User.new
   end
 
@@ -28,12 +28,12 @@ class UsersController < ApplicationController
     @user = RestClient.put 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+params[:user][:username], {:password => params[:user][:password],:realname => params[:user][:realname],:email => params[:user][:email],:publicvisible => "2"}.to_json, :content_type => :json, :accept => :json
     rescue Exception => e
     flash[:error] = e.message
-    redirect_to '/users/new'
+    redirect_to '/users/add'
     else
     flash[:success] = params[:user][:username]+' sucessfully created'
     redirect_to "/users/"+params[:user][:username]
     end
-    #@user = User.new(params[:user]).put(params[:user][:username])
+    #@user = User.add(params[:user]).put(params[:user][:username])
 
   end
 

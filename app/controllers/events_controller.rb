@@ -3,12 +3,13 @@ class EventsController < ApplicationController
     @events = Event.all
   end
 
-  def new
+  def add
+    @events = Event.new
   end
 
   def show
   end
 
-  def update
+  def edit
   end
 end
