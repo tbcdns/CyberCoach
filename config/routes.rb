@@ -1,13 +1,5 @@
 CyberCoach::Application.routes.draw do
 
-  get "events/index"
-
-  get "events/add"
-
-  get "events/show"
-
-  get "events/edit"
-
   # ---STATIC ---
   get "static/home"
 
@@ -15,8 +7,9 @@ CyberCoach::Application.routes.draw do
   # --- USERS ---
   resources :users
   resources :sports
+  resources :events
 
-  match '/signup',  :to => 'users#add'
+  match '/signup',  :to => 'users#new'
   # --- SESSIONS ---
   resources :sessions, :only => [:new, :create, :destroy]
 

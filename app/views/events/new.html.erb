@@ -1,0 +1,91 @@
+<script>
+    $(function() {
+        $('#event_begin').datepicker();
+        $('#event_end').datepicker();
+        $( "#slider" ).slider({
+            range: "min",
+            value: 2,
+            min: 1,
+            max: 25,
+            slide: function( event, ui ) {
+                $( "#event_nb_players" ).val( ui.value );
+                $("#nb_expected_players").html(ui.value * $("#slider-team").slider("value"));
+            }
+        });
+        $( "#event_nb_players" ).val($( "#slider" ).slider( "value" ) );
+
+        $( "#slider-team" ).slider({
+            range: "min",
+            value: 2,
+            min: 2,
+            max: 16,
+            step: 2,
+            slide: function( event, ui ) {
+                $( "#event_nb_teams" ).val( ui.value );
+                $("#nb_expected_players").html($("#slider").slider("value") * ui.value);
+            }
+        });
+        $( "#event_nb_teams" ).val($( "#slider-team" ).slider( "value" ) );
+        $("#nb_expected_players").html($("#slider").slider("value") * $("#slider-team").slider("value"));
+        $( "#dialog").load('/sports/new', function() {
+            var container = $(this);
+            container.dialog({
+                autoOpen: false,
+                width: 650,
+                resizable: false
+            })
+                    .find("form").submit(function() {
+                        container.dialog("close");
+                        return false;
+                    });
+        });
+
+        $( "#opener" ).click(function() {
+            $( "#dialog" ).dialog( "open" );
+            return false;
+        });
+    });
+</script>
+<% provide(:title, 'New event') %>
+<div class="hero-unit">
+  <h1 class="center">New event</h1>  <br>
+  <div class="row">
+    <div class="span6 offset2">
+      <%= form_for(@event) do |f| %>
+
+
+          <%= f.label :name %>
+          <%= f.text_field :name %>
+
+          <%= f.label :description %>
+          <%= f.text_area :description, :rows => '4' %>
+
+          <%= f.label :nb_players, "Number of player per team" %>
+          <div id="slider" style="margin-bottom:5px;"></div>
+          <%= f.text_field :nb_players, :style => 'width:30px', :disabled => 'true' %>
+
+          <%= f.label :nb_teams, "Number of teams expected" %>
+          <div id="slider-team" style="margin-bottom:5px;"></div>
+          <%= f.text_field :nb_teams, :style => 'width:30px', :disabled => 'true' %>
+
+          <div style="margin-bottom:10px;">Total number of players : <b><span id="nb_expected_players"></span></b></div>
+
+          <%= f.label :begin %>
+          <%= f.text_field :begin, :style => 'width:100px;' %>
+
+          <%= f.label :end %>
+          <%= f.text_field :end, :style => 'width:100px' %>
+
+          <%= f.label :sport_id, 'Sport' %><span class="btn" id="opener">Add sport</span>
+          <%= select "event", "sport_id", @sports.map {|s| [ s.name, s.id ]}, {:prompt => 'Select a sport'} %>
+
+          <%= f.hidden_field :user_id, :value => current_user %>
+
+          <%= f.hidden_field :close, :value => 'false' %>
+
+          <%= f.submit "Create this event", :class => "btn btn-large btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div id="dialog" title="Add new sport"></div>

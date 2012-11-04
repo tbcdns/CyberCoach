@@ -33,8 +33,8 @@ class Sport < ActiveResource::Base
 
 
   schema do
-    #string 'username', 'realname', 'email', 'password'
-    #integer 'publicvisible'
+    string 'name', 'description'
+    integer 'id'
   end
 
 

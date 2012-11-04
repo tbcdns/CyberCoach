@@ -1,6 +1,6 @@
 require 'rest-client'
 class UsersController < ApplicationController
-  def add
+  def new
     @user = User.new
   end
 

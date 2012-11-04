@@ -4,9 +4,5 @@
   <p style="text-align: center;"><%= image_tag('foot.jpg', :alt => '', :id => 'HomeImg') %></p>
   <p style="text-align: center;">The new social platform to organize your sport events.</p>
   <%= link_to 'Register', signup_path, :class => 'btn btn-large btn-primary' %>
-  <a class="btn btn-large btn-primary">Login</a>
+  <%= link_to 'Login', signin_path, :class => 'btn btn-large btn-primary' %>
 </div>
-
-
-<% require 'base64' %>
-<%= Base64.encode64('marc:marco') %>
