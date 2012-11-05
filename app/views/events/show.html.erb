@@ -1,4 +1,12 @@
-<div class="hero-unit">
+<h1><%= @event.name %></h1>
+
+<ul>
+  <li>Id : <%= @event.id %></li>
+  <li>Name : <%= @event.name %></li>
+  <li>Description : <%= @event.description %></li>
+  <li>Players : /<%= @event.nb_players %></li>
+  <li>Teams : <%=@event.teams.count %>/<%= @event.nb_teams %></li>
+      </ul><div class="hero-unit">
 <h1><%= @event.name %></h1>
 
   <%= @event.description %>

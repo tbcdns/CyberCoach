@@ -1,5 +1,6 @@
 CyberCoach::Application.routes.draw do
 
+
   # ---STATIC ---
   get "static/home"
 

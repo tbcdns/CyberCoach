@@ -1,0 +1,44 @@
+<script>
+    $(document).ready(function() {
+        $("#event_description").datepicker();
+    });
+</script>
+<% #TODO ajouter date picker jquery %>
+<% provide(:title, 'Add an event') %>
+<div class="hero-unit">
+  <h1 class="center">Add an event</h1>  <br>
+  <div class="row">
+    <div class="span6 offset2">
+      <%= form_for @events, :url => { :controller => "events", :action => "add" } do |f| %>
+
+
+          <%= f.label :name %>
+          <%= f.text_field :name%>
+
+          <%= f.label :description %>
+          <%= f.text_area :description, :cols => 10, :rows => 4 %>
+
+          <%= f.label :sport %>
+          <!-- #TODO ajouter un select pour la liste des sports -->
+          <%= f.number_field :sport_id %>
+          <%= f.number_field :user_id %><!-- #TODO a supprimer quand la BDD aura été mise à jour -->
+
+          <%= f.label :nb_players %>
+          <%= f.number_field :nb_players %>
+
+          <%= f.label :nb_teams %>
+          <%= f.number_field :nb_teams %>
+
+          <%= f.label :begin %>
+          <%= f.text_field :begin %>
+
+          <%= f.label :end %>
+          <%= f.text_field :end%>
+
+          <%= f.hidden_field :close, :value => 1 %>
+
+          <%= f.submit "Create an event", :class => "btn btn-large btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
