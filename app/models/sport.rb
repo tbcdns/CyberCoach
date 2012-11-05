@@ -33,8 +33,7 @@ class Sport < ActiveResource::Base
 
 
   schema do
-    string 'name', 'description'
-    integer 'id'
+    string 'name', 'description', 'id'
   end
 
 

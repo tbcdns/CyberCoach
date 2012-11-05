@@ -1,8 +1,55 @@
 <% provide(:title, 'Home') %>
 <div class="center hero-unit">
 <h1>Welcome to CyberCoach</h1>
+  <% if signed_in? %>
+      <div class="tabbable tabs-left" style="border:1px solid #d3d3d3;padding:10px;border-radius: 10px;min-height: 200px;">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#lA" data-toggle="tab">Next events</a></li>
+          <li><a href="#lB" data-toggle="tab">My events</a></li>
+          <li><a href="#lC" data-toggle="tab">Section 3</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="lA">
+              <% @recent_events.each do |event| %>
+                  <p>
+                    <%= link_to event.name, event %>
+                    <%= event.sport_id %>
+                    <%= event.begin %>
+                    <%= if event.close?
+                              'yes'
+                            else
+                              'no'
+                            end %>
+                  </p>
+              <% end %>
+          </div>
+          <div class="tab-pane" id="lB">
+            <% @my_events.each do |event| %>
+                <p>
+                  <%= link_to event.name, event %>
+                  <%= event.sport_id %>
+                  <%= event.begin %>
+                  <%= if event.close?
+                        'yes'
+                      else
+                        'no'
+                      end %>
+                </p>
+            <% end %>
+          </div>
+          <div class="tab-pane" id="lC">
+            <p>What up girl, this is Section C.</p>
+          </div>
+        </div>
+      </div><br>
+
+
+      <%= link_to 'Create new event', '/events/new', :class => 'btn btn-large btn-primary' %>
+      <%= link_to 'All events', '/events/', :class => 'btn btn-large btn-primary' %>
+  <% else %>
   <p style="text-align: center;"><%= image_tag('foot.jpg', :alt => '', :id => 'HomeImg') %></p>
   <p style="text-align: center;">The new social platform to organize your sport events.</p>
   <%= link_to 'Register', signup_path, :class => 'btn btn-large btn-primary' %>
   <%= link_to 'Login', signin_path, :class => 'btn btn-large btn-primary' %>
+  <% end %>
 </div>

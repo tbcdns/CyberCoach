@@ -1,2 +1,22 @@
-<h1>Events#show</h1>
-<p>Find me in app/views/events/show.html.erb</p>
+<div class="hero-unit">
+<h1><%= @event.name %></h1>
+
+  <%= @event.description %>
+  <% if !@event.close? && @taking_part == false %>
+  <%= form_for(@team) do |f| %>
+      <%= f.hidden_field :user_id, :value => current_user %>
+      <%= f.hidden_field :event_id, :value => params[:id] %>
+      <%= f.submit "Take Part Now!", :class => "btn btn-large btn-primary" %>
+  <% end %>
+  <% end %>
+
+  <% if @event.close? && !@taking_part %>
+     <div>This event is full</div>
+  <% end %>
+
+  <% if @taking_part %>
+      <div>You're taking part at this event</div>
+  <% end %>
+
+
+</div>

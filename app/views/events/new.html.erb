@@ -27,6 +27,7 @@
         });
         $( "#event_nb_teams" ).val($( "#slider-team" ).slider( "value" ) );
         $("#nb_expected_players").html($("#slider").slider("value") * $("#slider-team").slider("value"));
+        /*
         $( "#dialog").load('/sports/new', function() {
             var container = $(this);
             container.dialog({
@@ -43,7 +44,20 @@
         $( "#opener" ).click(function() {
             $( "#dialog" ).dialog( "open" );
             return false;
+        }); */
+        $('#event_nb_players').focus(function(){
+            $(this).prop('disabled',true);
         });
+        $('#event_nb_players').blur(function(){
+            $(this).prop('disabled',false);
+        });
+        $('#event_nb_teams').focus(function(){
+            $(this).prop('disabled',true);
+        });
+        $('#event_nb_teams').blur(function(){
+            $(this).prop('disabled',false);
+        });
+
     });
 </script>
 <% provide(:title, 'New event') %>
@@ -62,11 +76,11 @@
 
           <%= f.label :nb_players, "Number of player per team" %>
           <div id="slider" style="margin-bottom:5px;"></div>
-          <%= f.text_field :nb_players, :style => 'width:30px', :disabled => 'true' %>
+          <%= f.text_field :nb_players, :style => 'width:30px' %>
 
           <%= f.label :nb_teams, "Number of teams expected" %>
           <div id="slider-team" style="margin-bottom:5px;"></div>
-          <%= f.text_field :nb_teams, :style => 'width:30px', :disabled => 'true' %>
+          <%= f.text_field :nb_teams, :style => 'width:30px' %>
 
           <div style="margin-bottom:10px;">Total number of players : <b><span id="nb_expected_players"></span></b></div>
 
@@ -77,11 +91,11 @@
           <%= f.text_field :end, :style => 'width:100px' %>
 
           <%= f.label :sport_id, 'Sport' %><span class="btn" id="opener">Add sport</span>
-          <%= select "event", "sport_id", @sports.map {|s| [ s.name, s.id ]}, {:prompt => 'Select a sport'} %>
+          <%= select "event", "sport_id", @sports.map {|s| [ s.name, s.name ]}, {:prompt => 'Select a sport'} %>
 
           <%= f.hidden_field :user_id, :value => current_user %>
 
-          <%= f.hidden_field :close, :value => 'false' %>
+          <%= f.hidden_field :close, :value => '0' %>
 
           <%= f.submit "Create this event", :class => "btn btn-large btn-primary" %>
       <% end %>

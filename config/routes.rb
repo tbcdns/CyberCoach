@@ -8,6 +8,7 @@ CyberCoach::Application.routes.draw do
   resources :users
   resources :sports
   resources :events
+  resources :teams
 
   match '/signup',  :to => 'users#new'
   # --- SESSIONS ---

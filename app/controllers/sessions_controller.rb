@@ -2,10 +2,11 @@ require 'rest-client'
 require 'base64'
 class SessionsController < ApplicationController
   def new
-
+    @skip_login = true
   end
 
   def create
+    @skip_login = true
     begin
       user = User.find(params[:session][:username].downcase)
       digest = Base64.encode64(params[:session][:username].downcase+':'+params[:session][:password])

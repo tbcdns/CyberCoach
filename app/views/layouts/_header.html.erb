@@ -4,24 +4,24 @@
       <%= link_to "CyberCoach", root_path, :id => "logo" %>
       <nav>
         <ul class="nav pull-right">
-          <li><%= link_to "Home", root_path %></li>
-          <li><%= link_to "Help", '#' %></li>
+          <li><a href="/"><i class="icon-home icon-white"></i> Home</a></li>
+          <li><a href="#"><i class="icon-question-sign icon-white"></i> Help</a></li>
           <% if signed_in? %>
               <li id="fat-menu" class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i>
                   Account [<%= current_user %>]<b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><%= link_to "Profile", current_user %></li>
-                  <li><%= link_to "Settings", '#' %></li>
+                  <li><a href="/users/<%= current_user %>"><i class="icon-user"></i> Profile</a></li>
+                  <li><a href="#"><i class="icon-adjust"></i> Settings</a></li>
                   <li class="divider"></li>
                   <li>
-                    <%= link_to "Sign out", signout_path, :method => "delete" %>
+                    <a href="/signout" data-method="delete" rel="nofollow"><i class="icon-off"></i> Sign out</a>
                   </li>
                 </ul>
               </li>
           <% else %>
-              <li><%= link_to "Sign in", signin_path %></li>
+              <li><a href="/signin"><i class="icon-off icon-white"></i> Sign in</a></li>
           <% end %>
         </ul>
       </nav>

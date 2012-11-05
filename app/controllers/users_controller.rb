@@ -1,6 +1,7 @@
 require 'rest-client'
 class UsersController < ApplicationController
   def new
+    @skip_login = true
     @user = User.new
   end
 
@@ -24,6 +25,7 @@ class UsersController < ApplicationController
   end
 
   def create
+    @skip_login = true
     begin
     @user = RestClient.put 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+params[:user][:username], {:password => params[:user][:password],:realname => params[:user][:realname],:email => params[:user][:email],:publicvisible => "2"}.to_json, :content_type => :json, :accept => :json
     rescue Exception => e
