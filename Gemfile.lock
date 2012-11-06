@@ -165,6 +165,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   json
+  mysql
   pg
   rails (= 3.2.8)
   rake
