@@ -7,7 +7,7 @@ gem 'rails', '3.2.8'
 
 #In development we use mysql
 group :development do
-  gem 'mysql2'
+  gem 'mysql'
 end
 
 #In production (heroku) PostgreSQL
