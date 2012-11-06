@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-
+ruby '1.8.7'
 gem 'rails', '3.2.8'
 
 # Bundle edge Rails instead:
@@ -12,7 +12,7 @@ end
 
 #In production (heroku) PostgreSQL
 group :production do
-  gem 'pg', '0.14.1'
+  gem 'pg'
 end
 
 gem 'json'
@@ -42,6 +42,7 @@ end
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'heroku'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

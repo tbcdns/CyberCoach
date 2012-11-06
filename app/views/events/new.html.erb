@@ -90,8 +90,9 @@
           <%= f.label :end %>
           <%= f.text_field :end, :style => 'width:100px' %>
 
-          <%= f.label :sport_id, 'Sport' %><span class="btn" id="opener">Add sport</span>
+          <%= f.label :sport_id, 'Sport' %> <a href="#" id="opener" style="float:right;clear:both;">Add sport</a>
           <%= select "event", "sport_id", @sports.map {|s| [ s.name, s.name ]}, {:prompt => 'Select a sport'} %>
+
 
           <%= f.hidden_field :user_id, :value => current_user %>
 

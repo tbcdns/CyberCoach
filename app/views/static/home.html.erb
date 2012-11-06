@@ -1,27 +1,54 @@
 <% provide(:title, 'Home') %>
+<style>
+    .tabs-left > .nav-tabs > li > a {
+        border-color: #eee #ddd #eee #eee;
+    }
+    .tabs-left > .nav-tabs > li > a:hover {
+        border-color: #ddd #eee #ddd #ddd;
+    }
+
+    .tabs-left > .nav-tabs .active > a,
+    .tabs-left > .nav-tabs .active > a:hover {
+        border-color: #ddd transparent #ddd #ddd;
+        *border-right-color: #eee;
+    }
+    .nav-tabs{
+        width:120px;
+        text-align:left;
+
+    }
+    .nav-tabs > .active > a,
+    .nav-tabs > .active > a:hover {
+        color: #000;
+        background-color: #eee;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+</style>
 <div class="center hero-unit">
 <h1>Welcome to CyberCoach</h1>
   <% if signed_in? %>
-      <div class="tabbable tabs-left" style="border:1px solid #d3d3d3;padding:10px;border-radius: 10px;min-height: 200px;">
-        <ul class="nav nav-tabs">
+      <div class="tabbable tabs-left" style="border:1px solid #ddd;padding:10px;border-radius: 7px;min-height: 300px;margin-left:100px;">
+        <ul class="nav nav-tabs" style="min-height: 0px;margin-left:-131px;">
           <li class="active"><a href="#lA" data-toggle="tab">Next events</a></li>
           <li><a href="#lB" data-toggle="tab">My events</a></li>
-          <li><a href="#lC" data-toggle="tab">Section 3</a></li>
+          <li><a href="#lC" data-toggle="tab">My matches</a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="lA">
+            <table class="table table-hover">
+              <tr><td><b>Name</b></td><td><b>Sport</b></td><td><b>Start</b></td><td><b>End</b></td></tr>
               <% @recent_events.each do |event| %>
-                  <p>
-                    <%= link_to event.name, event %>
-                    <%= event.sport_id %>
-                    <%= event.begin %>
-                    <%= if event.close?
-                              'yes'
-                            else
-                              'no'
-                            end %>
-                  </p>
+                  <tr>
+                    <td><%= link_to event.name, event %></td>
+                    <td><%= event.sport_id %></td>
+                    <td><%= event.begin %></td>
+                    <td><%= event.end %></td>
+
+                  </tr>
               <% end %>
+              </table>
           </div>
           <div class="tab-pane" id="lB">
             <% @my_events.each do |event| %>
