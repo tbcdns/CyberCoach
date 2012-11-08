@@ -28,7 +28,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @teams = Team.where(:event_id => params[:id])
     if @teams.nil?
-      @teams.team_nb = 0
+      @teams[:team_nb] = 0
     end
     @team = Team.new
     if Team.where(:event_id => params[:id], :user_id => current_user).first.nil?
