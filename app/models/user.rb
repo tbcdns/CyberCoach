@@ -1,6 +1,9 @@
 require 'active_resource'
 
 class User < ActiveResource::Base
+  set_primary_key :username
+  has_many :teams
+
   class << self
     def element_path(id, prefix_options = {}, query_options = nil)
       check_prefix_options(prefix_options)

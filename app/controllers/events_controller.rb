@@ -1,3 +1,4 @@
+
 class EventsController < ApplicationController
   def index
     @events = Event.all
@@ -48,7 +49,10 @@ class EventsController < ApplicationController
 
 
     begin
-      @event = Event.includes(:teams).find_by_id(params[:id])
+      puts "test"
+      @event = Event.find_by_id(params[:id], :include => [:teams])
+      @team1 = Team.find_by_id(1)
+      logger.info("#{YAML::dump(@team1.user)}")
       logger.info("
     ############
     #{YAML::dump(@event.teams)}
