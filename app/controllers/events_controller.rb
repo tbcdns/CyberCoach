@@ -1,4 +1,3 @@
-
 class EventsController < ApplicationController
   def index
     @events = Event.all
@@ -35,6 +34,12 @@ class EventsController < ApplicationController
       @taking_part = false
     else
       @taking_part = false #should be true
+    end
+
+    if @event.user_id == current_user
+      @admin = true
+    else
+      @admin = false
     end
 
 
