@@ -1,15 +1,12 @@
+<div class="hero-unit">
 <h1><%= @event.name %></h1>
-
-<ul>
-  <li>Id : <%= @event.id %></li>
-  <li>Name : <%= @event.name %></li>
-  <li>Description : <%= @event.description %></li>
-  <li>Players : /<%= @event.nb_players %></li>
-  <li>Teams : <%=@event.teams.count %>/<%= @event.nb_teams %></li>
-      </ul><div class="hero-unit">
-<h1><%= @event.name %></h1>
-
-  <%= @event.description %>
+  <ul>
+    <li>Id : <%= @event.id %></li>
+    <li>Name : <%= @event.name %></li>
+    <li>Description : <%= @event.description %></li>
+    <li>Players : /<%= @event.nb_players %></li>
+    <li>Teams : <%=@teams.order(:team_nb).reverse.first.team_nb %>/<%= @event.nb_teams %></li>
+  </ul>
   <% if !@event.close? && @taking_part == false %>
   <%= form_for(@team) do |f| %>
       <%= f.hidden_field :user_id, :value => current_user %>

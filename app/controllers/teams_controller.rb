@@ -9,7 +9,7 @@ class TeamsController < ApplicationController
     nb_teams = event_infos.nb_teams
     team_nb = Team.where(:event_id => params[:team][:event_id]).order(:team_nb).reverse.first
 
-    if team_nb.nil?
+    if team_nb.nil?  #si aucune equipe, team_nb = 1
       team_nb = 1
     else
       team_nb = team_nb.team_nb
@@ -25,8 +25,9 @@ class TeamsController < ApplicationController
     @team = Team.new(:event_id => params[:team][:event_id], :user_id => current_user, :team_nb => team_nb)
       if @team.save
         flash[:success] = "You're taking part at this event!"
-        if free_space == 1 && team_nb+1 > nb_teams
+        if (free_space == 1 || free_space == 0) && team_nb+1 > nb_teams
           Event.update(params[:team][:event_id], :close => 1)
+          #generate matches
         end
         redirect_to "/events/"+params[:team][:event_id]
       else

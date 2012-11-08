@@ -26,6 +26,7 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
+    @teams = Team.where(:event_id => params[:id])
     @team = Team.new
     if Team.where(:event_id => params[:id], :user_id => current_user).first.nil?
       @taking_part = false
