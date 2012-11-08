@@ -3,18 +3,20 @@ CyberCoach::Application.routes.draw do
 
   # ---STATIC ---
   get "static/home"
-
   root :to => 'static#home'
   # --- USERS ---
   resources :users
-  resources :sports
-  resources :events
-  resources :teams
-
   match '/signup',  :to => 'users#new'
+  # --- SPORTS ---
+  resources :sports
+  # --- EVENTS ---
+  resources :events
+  # --- TEAMS ---
+  resources :teams
+  # --- MATCHES ---
+  resources :matches
   # --- SESSIONS ---
   resources :sessions, :only => [:new, :create, :destroy]
-
   match '/signin',  :to => 'sessions#new'
   match '/signout', :to => 'sessions#destroy', :via => :delete
 
