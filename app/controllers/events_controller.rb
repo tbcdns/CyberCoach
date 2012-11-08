@@ -4,27 +4,13 @@ class EventsController < ApplicationController
     @events = Event.all
   end
 
-  def add
-    @events = Event.new()
-    if params[:event] #if the form has been submitted
-      @events = Event.new(params[:event])
-      if @events.save
-        redirect_to :action => "index"
-      else
-        redirect_to :action => "index"
-      end
+  def new
+    @event = Event.new
+    @sports = Sport.find(:all)
+    if !signed_in?
+      flash[:error]  = 'You must be logged in to create a new event'
+      redirect_to "/signin"
     end
-
-      rescue Exception => e
-      flash[:error] = e.message
-
-    logger.info("
-    ############
-    #{YAML::dump(params[:event][:name])}
-    ############
-    ")
-    #params[:user][:username]
-
   end
 
   def create
@@ -44,7 +30,7 @@ class EventsController < ApplicationController
     if Team.where(:event_id => params[:id], :user_id => current_user).first.nil?
       @taking_part = false
     else
-      @taking_part = true
+      @taking_part = false #should be true
     end
 
 
