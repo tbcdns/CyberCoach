@@ -1,3 +1,6 @@
+<script>
+    $('#list_teams').tooltip(options)
+</script>
 <div class="hero-unit">
 <h1><%= @event.name %></h1>
   <ul>
@@ -5,7 +8,33 @@
     <li>Name : <%= @event.name %></li>
     <li>Description : <%= @event.description %></li>
     <li>Players : /<%= @event.nb_players %></li>
-    <li>Teams : <%=@teams.order(:team_nb).reverse.first.team_nb %>/<%= @event.nb_teams %></li>
+    <li><a href="#myModal" role="button" data-toggle="modal">Teams : <%=@teams.order(:team_nb).reverse.first.team_nb %>/<%= @event.nb_teams %></a></li>
+    <div class="modal hide fade" id="myModal">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>List of teams for event <%= @event.name %></h3>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <% if !@teams.nil? %>
+              <% last_team_nb = '' %>
+              <% @teams.order(:team_nb).each do |t| %>
+                  <% if last_team_nb != t.team_nb %>
+                      </li>
+                      <li style='list-style-type: disc;padding-top: 5px;'><strong>Team <%= t.team_nb %></strong></li>
+                      <li style='list-style-type: none;'>
+                  <% end %>
+                  <%= t.user_id %>
+                  <% last_team_nb = t.team_nb %>
+              <% end %>
+          <% end %>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+
   </ul>
   <% if !@event.close? && @taking_part == false %>
   <%= form_for(@team) do |f| %>
