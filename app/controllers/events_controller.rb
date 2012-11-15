@@ -36,6 +36,9 @@ class EventsController < ApplicationController
       @taking_part = false #should be true
     end
 
+    @matches = Match.where(:event_id => params[:id])
+    @match = Match.new
+
     if @event.user_id == current_user
       @admin = true
     else

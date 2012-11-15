@@ -1,3 +1,8 @@
+<script>
+    $(function() {
+        $('#match_date').datepicker();
+    });
+</script>
 <div class="hero-unit">
 <h1><%= @event.name %></h1>
   <ul>
@@ -55,6 +60,25 @@
 
   <% if @taking_part %>
       <div>You're taking part at this event</div>
+  <% end %>
+
+  <% if @admin %>
+     <div>Generate next round</div>
+      <%= form_for(@match) do |f| %>
+          <%= f.hidden_field :event_id, :value => params[:id] %>
+
+          <%= f.label :date %>
+          <%= f.text_field :date, :style => 'width:100px;' %>
+
+          <%= f.submit "Generate next round", :class => "btn btn-large btn-primary" %>
+
+      <% end %>
+
+      <% @matches.each do |match| %>
+          <p>
+        <%= match.team1_nb %> VS <%= match.team2_nb %>
+          </p>
+      <% end %>
   <% end %>
 
 
