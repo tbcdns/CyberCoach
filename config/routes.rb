@@ -11,6 +11,8 @@ CyberCoach::Application.routes.draw do
   resources :sports
   # --- EVENTS ---
   resources :events
+  match 'matches/simulate', :to => 'matches#simulate'
+  match 'matches/update_score', :to => 'matches#update_score'
   # --- TEAMS ---
   resources :teams
   # --- MATCHES ---

@@ -1,3 +1,6 @@
+<%
+   nb_players = @teams.count
+%>
 <script>
     $(function() {
         $('#match_date').datepicker();
@@ -9,7 +12,7 @@
     <li>Id : <%= @event.id %></li>
     <li>Name : <%= @event.name %></li>
     <li>Description : <%= @event.description %></li>
-    <li>Players : /<%= @event.nb_players %></li>
+    <li>Players : <%= nb_players %>/<%= @event.nb_players %></li>
     <li>
     <% if !@teams.empty? %>
         <a href="#myModal" role="button" data-toggle="modal">Teams : <%= @teams.order(:team_nb).reverse.first.team_nb %>/<%= @event.nb_teams %></a>
@@ -60,25 +63,6 @@
 
   <% if @taking_part %>
       <div>You're taking part at this event</div>
-  <% end %>
-
-  <% if @admin %>
-     <div>Generate next round</div>
-      <%= form_for(@match) do |f| %>
-          <%= f.hidden_field :event_id, :value => params[:id] %>
-
-          <%= f.label :date %>
-          <%= f.text_field :date, :style => 'width:100px;' %>
-
-          <%= f.submit "Generate next round", :class => "btn btn-large btn-primary" %>
-
-      <% end %>
-
-      <% @matches.each do |match| %>
-          <p>
-        <%= match.team1_nb %> VS <%= match.team2_nb %>
-          </p>
-      <% end %>
   <% end %>
 
 

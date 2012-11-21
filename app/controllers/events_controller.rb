@@ -60,4 +60,13 @@ class EventsController < ApplicationController
   def edit
   end
 
+
+  def close
+    puts params[:id]
+    Event.update(params[:id], :close => 1)
+
+    flash[:success] = 'Event closed'
+    redirect_to "/events/show/"+params[:id]
+  end
+
 end
