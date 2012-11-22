@@ -13,6 +13,7 @@ end
 #In production (heroku) PostgreSQL
 group :production do
   gem 'pg'
+  gem 'mysql'
 end
 
 gem 'json'
