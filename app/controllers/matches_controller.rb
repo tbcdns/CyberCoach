@@ -67,6 +67,19 @@ class MatchesController < ApplicationController
 
   def update_score #mise a jour du score + push des résultats pour chaque utilisateur
 
+    #TODO: les parametres doivent etre transférés et pas codés en dur
+    sport = "Running"
+    comment = "my Comment"
+    entryduration = 1000
+    entrylocation = "Fribourg"
+    publicvisible = 2
+    courselength = 600
+    coursetype = "Outdoor"
+    numberofrounds = 12
+    track = nil
+
+
+
     ##Fred
     match_id = params[:id]
     match = Match.find(match_id) #load the match which has just been finished
@@ -78,38 +91,59 @@ class MatchesController < ApplicationController
 
     for t1 in team1 #on parcourt tous les joueurs de l'équipe 1 de ce match
 
-      #TODO: les parametres doivent etre transférés et pas codés en dur
-      sport = "Running"
-      comment = "my Comment"
-      entryduration = 1000
-      entrylocation = "Fribourg"
-      publicvisible = 2
-      courselength = 600
-      coursetype = "Outdoor"
-      numberofrounds = 12
-      track = nil
       #on essaie d'ajouter une entry
       begin
-        #TODO : Probleme pour ajouter une entree (ou meme souscrire à un sport), il faut le mot de passe qui n'est pas disponible
-        digest = Base64.encode64(t1.user_id+':'+User.find(t1.user_id).password)
-        RestClient.post 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+t1.user_id+'/'+sport, {:entryrunning => {:comment => comment,:entrydate => DateTime.now, :entryduration => entryduration, :entrylocation => entrylocation, :publicvisible => publicvisible, :courselength => courselength, :coursetype => coursetype, :numberofrounds => numberofrounds, :track => track}}.to_json, :content_type => :json, :accept => :json, :Authorization => 'Basic '+digest
-      rescue Exception => e
+        user_local  = User_local.find_by_name(t1.user_id)
+
+        digest = Base64.encode64(t1.user_id+':'+user_local.password)
+        data = {:comment => comment, :entrydate => DateTime.now, :entryduration => entryduration, :entrylocation => entrylocation, :publicvisible => publicvisible, :courselength => courselength, :coursetype => coursetype, :numberofrounds => numberofrounds, :track => track}
+        data = JSON.parse(data.to_json).to_xml(:root => :entryrunning)
+
+        #Logging
+        puts "url: " + 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+t1.user_id+'/'+sport
+        puts data
+        #Logging
+
+        #Posting XML
+        RestClient.post 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+t1.user_id+'/'+sport, data , :content_type => 'application/xml', :accept => 'application/xml', :Authorization => 'Basic '+digest
+        #Logging if it worked
+        puts "**** Entry added for " + t1.user_id + " ****"
+
+      rescue Exception => e #if the user hasn't subscribed yet
+        begin
+        puts "**** User " + t1.user_id + " not registered for " + sport + " ****"  + digest
+
         flash[:error] = e.message
-        puts e.message
-        puts "
-****
-#{YAML::dump(t1)}
-****"
-        #redirect_to '/users/add'
-      else
-        flash[:success] = params[:user][:username]+' sucessfully created'
-        redirect_to "/users/"+params[:user][:username]
+
+        data_subscription = {:publicvisible => 2}
+        data_subscription = JSON.parse(data_subscription.to_json).to_xml(:root => :subscription)
+        puts "*** Trying to add theses data : " + data_subscription
+
+        RestClient.put 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+ t1.user_id + '/' + sport, data_subscription, :content_type => :xml, :accept => :xml, :Authorization => 'Basic '+digest
+        rescue Exception => e2
+          puts "** Subscription didn't work: " + e2.message
+
+        end
+        #Logging if subscribtion worked
+        puts "**** Subscription added for " + t1.user_id + " for " + sport + " ****"
+
+        #Posting XML
+        RestClient.post 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+t1.user_id+'/'+sport, data , :content_type => 'application/xml', :accept => 'application/xml', :Authorization => 'Basic '+digest
+        #Logging if it worked
+        puts "**** Entry added for " + t1.user_id + " ****"
+
+
+     # else
+     #   flash[:success] = params[:user][:username]+' sucessfully created'
+     #   redirect_to "/users/"+params[:user][:username]
       end
       #si erreur, l'utilisateur doit d'abord souscrire à un sport
 
 
     end
 
+    flash[:success] = "Scores successfully added to each player"
+    redirect_to '/'
     ##Fred END
 
   end

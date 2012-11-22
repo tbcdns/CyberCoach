@@ -27,6 +27,8 @@ class UsersController < ApplicationController
   def create
     @skip_login = true
     begin
+      dat = {:password => params[:user][:password],:realname => params[:user][:realname],:email => params[:user][:email],:publicvisible => "2"}
+      puts JSON.pretty_generate(dat)
     @user = RestClient.put 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+params[:user][:username], {:password => params[:user][:password],:realname => params[:user][:realname],:email => params[:user][:email],:publicvisible => "2"}.to_json, :content_type => :json, :accept => :json
     rescue Exception => e
     flash[:error] = e.message
