@@ -29,11 +29,13 @@ class EventsController < ApplicationController
     if @teams.nil?
       @teams[:team_nb] = 0
     end
+
     @team = Team.new
+
     if Team.where(:event_id => params[:id], :user_id => current_user).first.nil?
       @taking_part = false
     else
-      @taking_part = false #should be true
+      @taking_part = false # ***should be true***
     end
 
     @matches = Match.where(:event_id => params[:id])

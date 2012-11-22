@@ -18,6 +18,7 @@ class SessionsController < ApplicationController
       else
         if user    #check the password
           sign_in user
+          #TODO INSERT PASSWORD IN LOCAL DATABASE
           flash[:success] = 'Welcome back '+current_user.username.to_s
           redirect_to :controller => 'users', :action => 'show', :id => current_user.username
         else

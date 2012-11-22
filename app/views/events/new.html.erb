@@ -2,6 +2,7 @@
     $(function() {
         $('#event_begin').datepicker();
         $('#event_end').datepicker();
+
         $( "#slider" ).slider({
             range: "min",
             value: 2,
@@ -18,7 +19,7 @@
             range: "min",
             value: 2,
             min: 2,
-            max: 16,
+            max: 20,
             step: 2,
             slide: function( event, ui ) {
                 $( "#event_nb_teams" ).val( ui.value );
@@ -26,25 +27,9 @@
             }
         });
         $( "#event_nb_teams" ).val($( "#slider-team" ).slider( "value" ) );
-        $("#nb_expected_players").html($("#slider").slider("value") * $("#slider-team").slider("value"));
-        /*
-        $( "#dialog").load('/sports/new', function() {
-            var container = $(this);
-            container.dialog({
-                autoOpen: false,
-                width: 650,
-                resizable: false
-            })
-                    .find("form").submit(function() {
-                        container.dialog("close");
-                        return false;
-                    });
-        });
 
-        $( "#opener" ).click(function() {
-            $( "#dialog" ).dialog( "open" );
-            return false;
-        }); */
+        $("#nb_expected_players").html($("#slider").slider("value") * $("#slider-team").slider("value"));
+
         $('#event_nb_players').focus(function(){
             $(this).prop('disabled',true);
         });
@@ -90,7 +75,7 @@
           <%= f.label :end %>
           <%= f.text_field :end, :style => 'width:100px' %>
 
-          <%= f.label :sport_id, 'Sport' %> <a href="#" id="opener" style="float:right;clear:both;">Add sport</a>
+          <%= f.label :sport_id, 'Sport' %>
           <%= select "event", "sport_id", @sports.map {|s| [ s.name, s.name ]}, {:prompt => 'Select a sport'} %>
 
 
@@ -103,4 +88,3 @@
     </div>
   </div>
 </div>
-<div id="dialog" title="Add new sport"></div>

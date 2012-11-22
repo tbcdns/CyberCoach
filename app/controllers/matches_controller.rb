@@ -59,6 +59,15 @@ class MatchesController < ApplicationController
     end
   end
 
+  def update
+    @match = Match.find(params[:id])
+
+    if @match.update_attribute(:winning_team_nb, params[:match][:winning_team_nb])
+      alert "success"
+    end
+    #TODO UPDATE USER RESOURCE
+  end
+
   def simulate
 
       redirect_to :action => 'update_score', :id => 1

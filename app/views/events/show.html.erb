@@ -1,6 +1,32 @@
-<%
-   nb_players = @teams.count
-%>
+<%= javascript_include_tag :defaults %>
+<%= csrf_meta_tag %>
+<style>
+    .tabs-left > .nav-tabs > li > a {
+        border-color: #eee #ddd #eee #eee;
+    }
+    .tabs-left > .nav-tabs > li > a:hover {
+        border-color: #ddd #eee #ddd #ddd;
+    }
+
+    .tabs-left > .nav-tabs .active > a,
+    .tabs-left > .nav-tabs .active > a:hover {
+        border-color: #ddd transparent #ddd #ddd;
+        *border-right-color: #eee;
+    }
+    .nav-tabs{
+        width:120px;
+        text-align:left;
+
+    }
+    .nav-tabs > .active > a,
+    .nav-tabs > .active > a:hover {
+        color: #000;
+        background-color: #eee;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+</style>
 <script>
     $(function() {
         $('#match_date').datepicker();
@@ -8,53 +34,13 @@
 </script>
 <div class="hero-unit">
 <h1><%= @event.name %></h1>
-  <ul>
-    <li>Id : <%= @event.id %></li>
-    <li>Name : <%= @event.name %></li>
-    <li>Description : <%= @event.description %></li>
-    <li>Players : <%= nb_players %>/<%= @event.nb_players %></li>
-    <li>
-    <% if !@teams.empty? %>
-        <a href="#myModal" role="button" data-toggle="modal">Teams : <%= @teams.order(:team_nb).reverse.first.team_nb %>/<%= @event.nb_teams %></a>
-    <% else %>
-        Teams : 0/<%= @event.nb_teams %>
-    <% end %>
-    </li>
 
-    <div class="modal hide fade" id="myModal">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>List of teams for event <%= @event.name %></h3>
-      </div>
-      <div class="modal-body">
-        <ul>
-          <% if !@teams.nil? %>
-              <% last_team_nb = '' %>
-              <% @teams.order(:team_nb).each do |t| %>
-                  <% if last_team_nb != t.team_nb %>
-                      </li>
-                      <li style='list-style-type: disc;padding-top: 5px;'><strong>Team <%= t.team_nb %></strong></li>
-                      <li style='list-style-type: none;'>
-                  <% end %>
-                  <%= t.user_id %>
-                  <% last_team_nb = t.team_nb %>
-              <% end %>
-          <% end %>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-
-
-  </ul>
   <% if !@event.close? && @taking_part == false %>
-  <%= form_for(@team) do |f| %>
+    <%= form_for(@team) do |f| %>
       <%= f.hidden_field :user_id, :value => current_user %>
       <%= f.hidden_field :event_id, :value => params[:id] %>
       <%= f.submit "Take Part Now!", :class => "btn btn-large btn-primary" %>
-
-  <% end %>
+    <% end %>
   <% end %>
 
   <% if @event.close? && !@taking_part %>
@@ -65,5 +51,92 @@
       <div>You're taking part at this event</div>
   <% end %>
 
+
+  <div class="tabbable tabs-left" style="border:1px solid #ddd;padding:10px;border-radius: 7px;min-height: 300px;margin-left:100px;">
+    <ul class="nav nav-tabs" style="min-height: 0px;margin-left:-131px;">
+      <li class="active"><a href="#lA" data-toggle="tab">Informations</a></li>
+      <li><a href="#lB" data-toggle="tab">Matches</a></li>
+      <li><a href="#lC" data-toggle="tab">Discussion</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="lA">
+        <ul>
+          <li>Id : <%= @event.id %></li>
+          <li>Name : <%= @event.name %></li>
+          <li>Description : <%= @event.description %></li>
+          <li>Players : <%=  %>/<%= @event.nb_players %></li>
+          <li>
+            <% if !@teams.empty? %>
+                <a href="#myModal" role="button" data-toggle="modal">Teams : <%= @teams.order(:team_nb).reverse.first.team_nb %>/<%= @event.nb_teams %></a>
+            <% else %>
+                Teams : 0/<%= @event.nb_teams %>
+            <% end %>
+          </li>
+
+          <div class="modal hide fade" id="myModal">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h3>List of teams for event <%= @event.name %></h3>
+            </div>
+            <div class="modal-body">
+              <ul>
+                <% if !@teams.nil? %>
+                    <% last_team_nb = '' %>
+                    <% @teams.order(:team_nb).each do |t| %>
+                        <% if last_team_nb != t.team_nb %>
+                            </li>
+                            <li style='list-style-type: disc;padding-top: 5px;'><strong>Team <%= t.team_nb %></strong></li>
+                            <li style='list-style-type: none;'>
+                        <% end %>
+                        <%= t.user_id %>
+                        <% last_team_nb = t.team_nb %>
+                    <% end %>
+                <% end %>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ul>
+      </div>
+      <div class="tab-pane" id="lB">
+        <% if @admin %>
+            <h3 style="text-align:center;">List of matches</h3>
+            <table>
+              <tr>
+                <% level=1 %>
+            <% @matches.each do |match| %>
+                    <% if match.level != level %>
+                        </tr><tr>
+                        <% level = match.level %>
+                    <% end %>
+                <td style="border:1px solid #d3d3d3;"><%= match.team1_nb %> VS <%= match.team2_nb %>
+                <%= form_for match, :remote => true  do |f|%>
+
+                      <%= f.label :winning_team_nb, 'Winner' %>
+                      <%= select "match", "winning_team_nb", options_for_select([[match.team1_nb.to_s, match.team1_nb], [match.team2_nb.to_s, match.team2_nb]], match.winning_team_nb)  %>
+
+                    <%= f.submit "Ok", :class => "btn btn-small btn-primary" %>
+                <% end %>
+                </td>
+            <% end %>
+              </table>
+                <div>Generate next round</div>
+                <%= form_for(@match) do |f| %>
+                    <%= f.hidden_field :event_id, :value => params[:id] %>
+
+                    <%= f.label :date %>
+                    <%= f.text_field :date, :style => 'width:100px;' %>
+
+                    <%= f.submit "Generate next round", :class => "btn btn-primary" %>
+
+                 <% end %>
+
+        <% end %>
+      </div>
+      <div class="tab-pane" id="lC">
+        <p>SECTION C</p>
+      </div>
+    </div>
+  </div>
 
 </div>
