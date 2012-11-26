@@ -32,7 +32,7 @@
       <td><%= event.name %></td>
       <td><%= event.description %></td>
       <td><%= event.nb_players %></td>
-      <td><%= event.teams.count %>/<%= event.nb_teams %></td>
+      <td><%= event.teams.count %><%= event.teams.order(:team_nb).reverse.first.team_nb %>/<%= event.nb_teams %></td>
     </tr>
 <% end %>
 </tbody>
