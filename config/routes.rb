@@ -15,6 +15,8 @@ CyberCoach::Application.routes.draw do
   match 'matches/update_score', :to => 'matches#update_score'
   # --- TEAMS ---
   resources :teams
+  # --- TEAMSNAME ---
+  resources :teamnames
   # --- MATCHES ---
   resources :matches
   # --- SESSIONS ---

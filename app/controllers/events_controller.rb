@@ -27,6 +27,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @teams = Team.where(:event_id => params[:id])
     @teamNames = Teamname.where(:event_id => params[:id])
+    @teamName = Teamname.new
     if @teams.nil?
       @teams[:team_nb] = 0
     end

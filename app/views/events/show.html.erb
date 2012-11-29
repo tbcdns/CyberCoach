@@ -112,6 +112,11 @@
 
     $(document).ready(function($) {
         $('#match_date').datepicker();
+        $('span[id*=addName]').hide();
+        $('a[id*="addName"]').click(function(){
+            var id = $(this).attr("class");
+            $('#addNameForm-'+id).show();
+        });
 
         var base = $('#tournamentTree');
         var matchDivsByRound = [];
@@ -257,6 +262,7 @@
         <div id="pushTree"></div>
 
       </div>
+      <!-- LIST OF TEAMS -->
       <div class="tab-pane" id="lC">
         <ul>
           <% if !@teams.nil? %>
@@ -266,12 +272,37 @@
                       </li>
                       <li style='list-style-type: disc;padding-top: 5px;'><strong>Team <%= t.team_nb %>
                       <% if @teamNames.where(:team_nb => t.team_nb).empty? %>
-                        <%= link_to("Add name", "/") %>
-                            Add name
+                            </strong>
+                            <% if !@teams.where(:team_nb => t.team_nb, :user_id => @current_user).empty? %>
+
+                            <%= link_to("Add name", "#", :id => "addName-"+t.team_nb.to_s, :class => t.team_nb.to_s) %>
+                            <span id="addNameForm-<%= t.team_nb.to_s %>">
+                              <%= form_for @teamName, :remote => true do |f| %>
+                                  <%= f.hidden_field :event_id, :value => params[:id] %>
+                                  <%= f.hidden_field :team_nb, :value => t.team_nb %>
+                                  <%= f.label :name %>
+                                  <%= f.text_field :name, :style => 'width:100px;' %>
+
+                                  <%= f.submit "Add team name", :class => "btn btn-primary btn-small" %>
+                              <% end %>
+                            </span>
+                            <% end %>
                       <% else %>
-                        <%= @teamNames.where(:team_nb => t.team_nb).first.name %>
+                        [<%= @teamNames.where(:team_nb => t.team_nb).first.name %>]</strong>
+                            <% if !@teams.where(:team_nb => t.team_nb, :user_id => @current_user).empty? %>
+                            <%= link_to("Change name", "#", :id => "addName-"+t.team_nb.to_s, :class => t.team_nb.to_s) %>
+                            <span id="addNameForm-<%= t.team_nb.to_s %>">
+                              <%= form_for @teamNames.find(@teamNames.where(:team_nb => t.team_nb).first.id), :remote => true do |f| %>
+                                  <%= f.hidden_field :id, :value => @teamNames.where(:team_nb => t.team_nb).first.id %>
+                                  <%= f.label :name %>
+                                  <%= f.text_field :name, :style => 'width:100px;' %>
+
+                                  <%= f.submit "Add team name", :class => "btn btn-primary btn-small" %>
+                              <% end %>
+                            </span>
+                            <% end %>
                       <% end %>
-                      </strong></li>
+                      </li>
                       <li style='list-style-type: none;'>
                   <% end %>
                   <%= t.user_id %>
@@ -282,6 +313,7 @@
         </ul>
       </div>
       <% if @admin %>
+      <!--ADMIN-->
       <div class="tab-pane" id="lD">
         <% level=1 %>
         <% genNextM = true %>
@@ -297,7 +329,7 @@
                     <td style="border:1px solid #d3d3d3;"><b><%= match.team1_nb %></b> VS <b><%= match.team2_nb %></b>
                       <% if match.winning_team_nb.nil? %>
                           <% genNextM = false %>
-                          <%= form_for match,:name => match.id, :remote => true do |f|%>
+                          <%= form_for match, :remote => true do |f|%>
 
                               <%= f.label :winning_team_nb, 'Winner' %>
                               <%= select "match", "winning_team_nb", options_for_select([[match.team1_nb.to_s, match.team1_nb], [match.team2_nb.to_s, match.team2_nb]], match.winning_team_nb)  %>
