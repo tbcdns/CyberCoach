@@ -73,4 +73,12 @@ class EventsController < ApplicationController
     redirect_to "/events/show/"+params[:id]
   end
 
+  def tree
+    @skip_footer = true
+    @matches = Match.where(:event_id => params[:id])
+    @event = Event.find(params[:id])
+    @teams = Team.where(:event_id => params[:id])
+    @teamNames = Teamname.where(:event_id => params[:id])
+  end
+
 end

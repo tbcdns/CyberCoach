@@ -62,6 +62,8 @@ GEM
       rubyzip
     heroku-api (0.3.6)
       excon (~> 0.16.7)
+    highcharts-rails (2.3.3)
+      railties (~> 3.1)
     hike (1.2.1)
     i18n (0.6.1)
     journey (1.0.4)
@@ -162,6 +164,7 @@ DEPENDENCIES
   capybara (= 1.1.2)
   coffee-rails (~> 3.2.1)
   heroku
+  highcharts-rails (~> 2.3.3)
   jquery-rails
   jquery-ui-rails
   json

@@ -1,0 +1,183 @@
+<style type="text/css">
+    .tabs-left > .nav-tabs > li > a {
+        border-color: #eee #ddd #eee #eee;
+    }
+    .tabs-left > .nav-tabs > li > a:hover {
+        border-color: #ddd #eee #ddd #ddd;
+    }
+
+    .tabs-left > .nav-tabs .active > a,
+    .tabs-left > .nav-tabs .active > a:hover {
+        border-color: #ddd transparent #ddd #ddd;
+        *border-right-color: #eee;
+    }
+    .nav-tabs{
+        width:120px;
+        text-align:left;
+
+    }
+    .nav-tabs > .active > a,
+    .nav-tabs > .active > a:hover {
+        color: #000;
+        background-color: #eee;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+    .tournament {
+        background-color: #EEE;
+        border: dashed 1px solid;
+        overflow: auto;
+    }
+    .tournament .bracket {
+        background-color: #EEE;
+        min-width: 100px;
+        vertical-align: top;
+        float: left;
+    }
+
+    .tournament .bracket .match {
+        background-color: #ddd;
+        border-top: 2px solid black;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+        border-top-right-radius:0.5em;
+        border-bottom-right-radius:0.5em ;
+        color: #21619b;
+    }
+    .tournament .bracket .match .p1 {
+        height: 22px;
+    }
+    .tournament .bracket .match .p2 {
+        height: 22px;
+    }
+    .tournament .bracket .match .spacer {
+        background-color: #EEE;
+        height: 38px;
+        border-top-right-radius:0.5em;
+        border-bottom-right-radius:0.5em ;
+    }
+    .tournament .bracket .spacer {
+        height: 80px;
+    }
+    .tournament .bracket .half-spacer {
+        height: 40px;
+    }
+    .tournament .bracket .small-spacer {
+        height: 10px;
+        background-color: #EEE;
+    }
+    .tournament .bracket .winner {
+        border-bottom: 1px solid black;
+        font-weight: bold;
+    }
+
+    .left-line {
+        border-left: 1px solid;
+    }
+
+    .tournament .cell {
+        min-width: 100px;
+        height: 20px;
+        float: left;
+        background-color: #d3d3d3;
+    }
+    .tournament .l2 {
+        background-color: #d3d3d3;
+    }
+    .tournament .lmax {
+        width: 0px;
+        clear: both;
+    }
+</style>
+<script type="text/javascript">
+    <% nbRound = (Math.log(@event.nb_teams)/Math.log(2)) %>
+    var matchInfo = {
+        "rounds" : [
+            <% for i in 1..nbRound do %>
+            { "name": "Round<%= i %>",
+                "matches": [
+                    <% if @matches.where(:level => i).empty? %>
+                    <% for j in 1..(@event.nb_teams/(2**i)) do %>
+                    { "id" : <%= i.to_s+""+j.to_s %>, "p1" : "?", "p2" : "?"},
+                    <% end %>
+                    <% else %>
+                    <% @matches.where(:level => i).each do |match| %>
+                    { "id" : <%= match.id %>, "p1" : "<% if @teamNames.where(:team_nb => match.team1_nb).empty? %><%= match.team1_nb %><% else %><%= @teamNames.where(:team_nb => match.team1_nb).first.name %><% end %>", "p2" : "<% if @teamNames.where(:team_nb => match.team2_nb).empty? %><%= match.team2_nb %><% else %><%= @teamNames.where(:team_nb => match.team2_nb).first.name %><% end %>"},
+                    <% end %>
+                    <% end %>
+                ]
+            },
+            <% end %>
+        ]
+    };
+
+    $(document).ready(function($) {
+        var base = $('#tournamentTree');
+        var matchDivsByRound = [];
+
+        for (var roundIndex=0; roundIndex<matchInfo.rounds.length; roundIndex++) {
+            var round = matchInfo.rounds[roundIndex];
+            var bracket = checkedAppend('<div class="bracket"></div>', base);
+            var matchDivs = [];
+            matchDivsByRound.push(matchDivs);
+
+            //setup the match boxes round by round
+            for (var i=0; i<round.matches.length; i++) {
+                var vOffset = checkedAppend('<div></div>', bracket);
+
+                var match = round.matches[i];
+                var matchHtml = '<div class="match" id="match' + match.id + '">'
+                        + '<div class="p1">' + fmtName(" "+match.p1) + '</div>'
+                        + '<div class="spacer"></div>'
+                        + '<div class="p2">' + fmtName(" "+match.p2) + '</div>';
+                matchDiv = checkedAppend(matchHtml, bracket);
+                matchDivs.push(matchDiv);
+
+                if (roundIndex > 0) {
+                    //row 2+; line up with previous row
+                    var alignTo = matchDivsByRound[roundIndex-1][i*2];
+                    //offset to line up tops
+                    var desiredOffset = alignTo.position().top - matchDiv.position().top;
+
+                    //offset by half the previous match-height
+                    desiredOffset += alignTo.height() / 2;
+                    vOffset.height(desiredOffset);
+                } else {
+                    checkedAppend('<div class="small-spacer"></div>', bracket);
+                }
+
+                if (roundIndex > 0) {
+                    //tweak our size so we stretch to the middle of the appropriate element
+                    var stretchTo = matchDivsByRound[roundIndex-1][i*2+1];
+                    var newH = stretchTo.position().top + stretchTo.height()/2 - matchDiv.position().top;
+                    var deltaH = newH - matchDiv.height();
+                    matchDiv.height(newH);
+                    var spacer = matchDiv.find('.spacer');
+                    spacer.height(spacer.height() + deltaH);
+                }
+            }
+        }
+        //setup the final winners box; just a space for a name whose bottom is centrally aligned with the last match
+        bracket = checkedAppend('<div class="bracket"></div>', base);
+        var vOffset = checkedAppend('<div></div>', bracket);
+        var alignTo = matchDivsByRound[matchInfo.rounds.length - 1][0]; //only 1 match in the last round
+        var html = '<div class="winner"><% if @matches.where(:level => nbRound).first.nil? %> ? <% else %><%= @matches.where(:level => nbRound).first.winning_team_nb %><% end %></div>';
+        var winnerDiv = checkedAppend(html, bracket);
+        vOffset.height(alignTo.position().top - winnerDiv.position().top + alignTo.height() / 2 - winnerDiv.height());
+    });
+
+    function fmtName(name) {
+        return null != name ? name : '?';
+    }
+
+    function checkedAppend(rawHtml, appendTo) {
+        var html = $(rawHtml);
+        if (0 == html.length) {
+            throw "Built ourselves bad html : " + rawHtml;
+        }
+        html.appendTo(appendTo);
+        return html;
+    }
+</script>
+<div id="tournamentTree" class="tournament"></div>

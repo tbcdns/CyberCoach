@@ -20,6 +20,7 @@ gem 'json'
 #gem 'activeresource', :require => 'active_resource'
 gem 'rest-client'
 gem 'rake'
+gem 'highcharts-rails', '~> 2.3.3'
 
 # Gems used only for assets and not required
 # in production environments by default.

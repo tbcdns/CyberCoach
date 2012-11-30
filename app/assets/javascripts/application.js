@@ -15,3 +15,5 @@
 //= require bootstrap
 //= require_tree .
 //= require jquery.ui.all
+//= require highcharts
+//= require highcharts/highcharts-more
