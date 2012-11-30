@@ -1,4 +1,45 @@
-<script>
+<style type="text/css">
+    .tabs-left > .nav-tabs > li > a {
+        border-color: #eee #ddd #eee #eee;
+    }
+    .tabs-left > .nav-tabs > li > a:hover {
+        border-color: #ddd #eee #ddd #ddd;
+    }
+
+    .tabs-left > .nav-tabs .active > a,
+    .tabs-left > .nav-tabs .active > a:hover {
+        border-color: #ddd transparent #ddd #ddd;
+        *border-right-color: #eee;
+    }
+    .nav-tabs{
+        width:120px;
+        text-align:left;
+
+    }
+    .nav-tabs > .active > a,
+    .nav-tabs > .active > a:hover {
+        color: #000;
+        background-color: #eee;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+
+    .subTitle {
+        float:right;
+        text-align:center;
+        border-top:1px solid #ddd;
+        border-left:1px solid #ddd;
+        border-right:1px solid #ddd;
+        border-bottom:1px solid #eee;
+        border-top-right-radius: 7px;
+        border-top-left-radius: 7px;
+        width:200px;
+        margin-bottom:-1px;
+        z-index: 999;"
+    }
+</style>
+<script type="text/javascript">
     function bold(id){
         $('#'+id).css('font-weight', 'bold');
     }
@@ -6,10 +47,53 @@
     function normal(id){
         $('#'+id).css('font-weight', 'normal');
     }
+    $(document).ready(function($) {
+    $('#tab1').click(function(){
+        $('#title').html($(this).html());
+    });
+    $('#tab2').click(function(){
+        $('#title').html($(this).html());
+    });
+    $('#tab3').click(function(){
+        $('#title').html($(this).html());
+    });
+    $('#tab4').click(function(){
+        $('#title').html($(this).html());
+    });
+    });
 </script>
 
 <div class="hero-unit">
-<h1>List of events</h1>
+<h1>Events</h1>
+  <div class="subTitle"><h3 id="title">Boxing</h3></div>
+  <div style="clear:both;"></div>
+  <div class="tabbable tabs-left" style="border:1px solid #ddd;padding:10px;border-radius: 7px;border-top-right-radius:0px;min-height: 300px;margin-left:100px;">
+    <ul class="nav nav-tabs" style="min-height: 0px;margin-left:-131px;">
+      <li class="active"><a href="#lA" data-toggle="tab" id="tab1">Boxing</a></li>
+      <li><a href="#lB" data-toggle="tab" id="tab2">Cycling</a></li>
+      <li><a href="#lC" data-toggle="tab" id="tab3">Running</a></li>
+      <li><a href="#lD" data-toggle="tab" id="tab4">Soccer</a></li>
+    </ul>
+    <div class="tab-content">
+      <!-- INFORMATIONS -->
+      <div class="tab-pane active" id="lA">
+
+      </div>
+      <!-- LIST OF MATCHES -->
+      <div class="tab-pane" id="lB">
+
+
+
+      </div>
+      <!-- LIST OF TEAMS -->
+      <div class="tab-pane" id="lC">
+
+      </div>
+      <div class="tab-pane" id="lD">
+
+      </div>
+    </div>
+  </div>
 <table class='table'>
   <thead>
   <tr>

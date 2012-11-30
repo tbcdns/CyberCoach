@@ -90,13 +90,27 @@
         width: 0px;
         clear: both;
     }
+
+    .subTitle {
+        float:right;
+        text-align:center;
+        border-top:1px solid #ddd;
+        border-left:1px solid #ddd;
+        border-right:1px solid #ddd;
+        border-bottom:1px solid #eee;
+        border-top-right-radius: 7px;
+        border-top-left-radius: 7px;
+        width:200px;
+        margin-bottom:-1px;
+        z-index: 999;"
+    }
 </style>
 <div class="hero-unit">
 <h1><%= @event.name %></h1>
 
-  <h3 id="title" style="text-align: right;">Informations</h3>
-
-  <div class="tabbable tabs-left" style="border:1px solid #ddd;padding:10px;border-radius: 7px;min-height: 300px;margin-left:100px;">
+  <div class="subTitle"><h3 id="title">Informations</h3></div>
+  <div style="clear:both;"></div>
+  <div class="tabbable tabs-left" style="border:1px solid #ddd;padding:10px;border-radius: 7px;border-top-right-radius:0px;min-height: 300px;margin-left:100px;">
     <ul class="nav nav-tabs" style="min-height: 0px;margin-left:-131px;">
       <li class="active"><a href="#lA" data-toggle="tab" id="tab1">Informations</a></li>
       <li><a href="#lB" data-toggle="tab" id="tab2">Matches</a></li>
@@ -202,10 +216,10 @@
                             <span id="addNameForm-<%= t.team_nb.to_s %>">
                               <%= form_for @teamNames.find(@teamNames.where(:team_nb => t.team_nb).first.id), :remote => true do |f| %>
                                   <%= f.hidden_field :id, :value => @teamNames.where(:team_nb => t.team_nb).first.id %>
-                                  <%= f.label :name %>
-                                  <%= f.text_field :name, :style => 'width:100px;' %>
 
-                                  <%= f.submit "Add team name", :class => "btn btn-primary btn-small" %>
+                                  <%= f.text_field :name, :style => 'width:150px;' %>
+
+                                  <%= f.submit "Change team name", :class => "btn btn-primary btn-small", :style => 'margin-top:-10px;', :id => 'submitName-'+t.team_nb.to_s, :name => t.team_nb.to_s %>
                               <% end %>
                             </span>
                             <% end %>
@@ -228,10 +242,11 @@
 
             <h3 style="text-align:center;">List of matches</h3>
             <table>
+              <tr><td colspan="10">Round 1</td> </tr>
               <tr>
                 <% @matches.each do |match| %>
                     <% if match.level != level %>
-                        </tr><tr>
+                        </tr><tr><td colspan="10">Round <%= level+1 %></td> </tr><tr>
                 <% level = match.level %>
                     <% end %>
                     <td style="border:1px solid #d3d3d3;"><b><%= match.team1_nb %></b> VS <b><%= match.team2_nb %></b>
@@ -298,14 +313,19 @@
             var id = $(this).attr("class");
             $('#addNameForm-'+id).show();
         });
+        $('input[id*="submitName"]').click(function(){
+            var id = $(this).attr("name");
+            $('#addNameForm-'+id).hide();
+            alert("Name changed!");
+        });
         $('#tab1').click(function(){
-            $('#title').html('Informations');
+            $('#title').html($(this).html());
         });
         $('#tab2').click(function(){
-            $('#title').html('Matches');
+            $('#title').html($(this).html());
         });
         $('#tab3').click(function(){
-            $('#title').html('Teams');
+            $('#title').html($(this).html());
         });
         $('#tab4').click(function(){
             $('#title').html('Administration');
