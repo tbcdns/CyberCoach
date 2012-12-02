@@ -115,7 +115,7 @@
       <li class="active"><a href="#lA" data-toggle="tab" id="tab1">Informations</a></li>
       <li><a href="#lB" data-toggle="tab" id="tab2">Matches</a></li>
       <li><a href="#lC" data-toggle="tab" id="tab3">Teams</a></li>
-      <% if @admin %>
+      <% if !@admin %>
        <li><a href="#lD" data-toggle="tab" id="tab4">Admin</a></li>
       <% end %>
     </ul>
@@ -234,7 +234,7 @@
           </li>
         </ul>
       </div>
-      <% if @admin %>
+      <% if !@admin %>
       <!--ADMINISTRATION-->
       <div class="tab-pane" id="lD">
         <% level=1 %>
@@ -257,6 +257,24 @@
                               <%= f.label :winning_team_nb, 'Winner' %>
                               <%= select "match", "winning_team_nb", options_for_select([[match.team1_nb.to_s, match.team1_nb], [match.team2_nb.to_s, match.team2_nb]], match.winning_team_nb)  %>
 
+                              <% if @event.sport_id == "Soccer" %>
+                                  <%= text_field_tag "score_team_1", nil, :placeholder => "Team 1", :size => 5, :maxlength => 5 %>
+                                  <%= text_field_tag "score_team_2", nil, :placeholder => "Team 2", :size => 5, :maxlength => 5 %>
+                              <% elsif @event.sport_id == "Boxing" %>
+                                  <%= text_field_tag "nb_rounds", nil, :placeholder => "Number of rounds", :size => 5, :maxlength => 5 %>
+                                  <%= text_field_tag "round_duration", nil, :placeholder => "Round duration (min)", :size => 5, :maxlength => 5 %>
+                              <% elsif @event.sport_id == "Cycling" %>
+                                  <%= text_field_tag "course_length", nil, :placeholder => "Course length (m)", :size => 5, :maxlength => 5 %>
+                                  <%= text_field_tag "course_type", nil, :placeholder => "Course type", :size => 15, :maxlength => 15 %>
+                              <% elsif @event.sport_id == "Boxing" %>
+                                  <%= text_field_tag "nb_rounds", nil, :placeholder => "Number of rounds", :size => 5, :maxlength => 5 %>
+                                  <%= text_field_tag "round_duration", nil, :placeholder => "Round duration (min)", :size => 5, :maxlength => 5 %>
+                              <% elsif @event.sport_id == "Running" %>
+                                  <%= text_field_tag "course_length", nil, :placeholder => "Course length (m)", :size => 15, :maxlength => 15 %>
+                                  <%= text_field_tag "course_type", nil, :placeholder => "Round duration (min)", :size => 15, :maxlength => 15 %>
+                                  <%= text_field_tag "nb_rounds", nil, :placeholder => "Number of rounds", :size => 5, :maxlength => 5 %>
+                              <% end %>
+                              <%= hidden_field "sport_id", @event.sport_id %>
                               <%= f.submit "Ok", :class => "btn btn-small btn-primary", :onClick => 'alert("Request saved")' %>
                           <% end %>
                       <% else %>
