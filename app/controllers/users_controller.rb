@@ -18,12 +18,12 @@ class UsersController < ApplicationController
   def show
     begin
       @user = User.find(params[:id])
-      @boxing = Subscription.find(:all, :params => {:sport => "Boxing", :user => @user.username })
+      @boxing = Subscription.find(:all, :params => {:sport => "Boxing", :user => @user.username, :start => 0, :size => 500 })
       @entries = Array.new
   @boxing.each do |b|
-
-     @entries = Entry.find(:all, :params => {:sport => "Boxing", :user => @user.username, :entry_id => b.id })
-     puts "entries : #{@entries}"
+                     puts b.id
+     @entries = Entry.find(:all, :params => {:sport => "Boxing", :user => @user.username, :entry_id => b.id})
+     #puts "entries : #{@entries}"
 
   end
 

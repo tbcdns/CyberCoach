@@ -32,7 +32,7 @@ class Subscription < ActiveResource::Base
     end
   end
 
-  self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/:user/:sport/"
+  self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/:user/:sport/?start=0&size=500"
   self.element_name = ""
 
 
