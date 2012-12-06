@@ -142,7 +142,7 @@ class MatchesController < ApplicationController
         #Posting XML
         RestClient.post 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+t1.user_id+'/'+sport, formated_data , :content_type => 'application/xml', :accept => 'application/xml', :Authorization => 'Basic '+digest
         #Logging if it worked
-        puts "**** Entry added for " + t1.user_id + " ****"
+        puts "**** Subscription added for " + t1.user_id + " ****"
 
       rescue Exception => e #if the user hasn't subscribed yet
         puts e.message
@@ -166,7 +166,7 @@ class MatchesController < ApplicationController
         #Posting XML
         RestClient.post 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+t1.user_id+'/'+sport, formated_data , :content_type => 'application/xml', :accept => 'application/xml', :Authorization => 'Basic '+digest
         #Logging if it worked
-        puts "**** Entry added for " + t1.user_id + " ****"
+        puts "**** Subscription added for " + t1.user_id + " ****"
 
 
         # else
@@ -198,7 +198,7 @@ class MatchesController < ApplicationController
         #Posting XML
         RestClient.post 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+t2.user_id+'/'+sport, formated_data , :content_type => 'application/xml', :accept => 'application/xml', :Authorization => 'Basic '+digest
         #Logging if it worked
-        puts "**** Entry added for " + t2.user_id + " ****"
+        puts "**** Subscription added for " + t2.user_id + " ****"
 
       rescue Exception => e #if the user hasn't subscribed yet
         puts e.message
@@ -222,7 +222,7 @@ class MatchesController < ApplicationController
         #Posting XML
         RestClient.post 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+t2.user_id+'/'+sport, formated_data , :content_type => 'application/xml', :accept => 'application/xml', :Authorization => 'Basic '+digest
         #Logging if it worked
-        puts "**** Entry added for " + t2.user_id + " ****"
+        puts "**** Subscription added for " + t2.user_id + " ****"
 
 
         # else

@@ -71,7 +71,11 @@
       </div>
       <!-- LIST OF TEAMS -->
       <div class="tab-pane" id="lC">
-
+            <h2 style='text-align: left;'>Boxing</h2>
+        <% @boxing.each do |b| %>
+        <%=  b.id %>
+      <% end %>
+             <%= debug @boxing %>
       </div>
     </div>
   </div>

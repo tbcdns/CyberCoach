@@ -1,6 +1,6 @@
 require 'active_resource'
 
-class User < ActiveResource::Base
+class Subscription < ActiveResource::Base
   class << self
     def element_path(id, prefix_options = {}, query_options = nil)
       check_prefix_options(prefix_options)
@@ -15,9 +15,12 @@ class User < ActiveResource::Base
     end
 
     def instantiate_collection(collection, prefix_options = {})
-      collection = collection[element_name.pluralize] if collection.instance_of?(Hash)
+      puts "===> #{collection}"
+      collection = collection['entries'] if collection.instance_of?(Hash)
       collection.collect! { |record| instantiate_record(record, prefix_options) }
     end
+
+
 
     def create
       run_callbacks :create do
@@ -29,16 +32,14 @@ class User < ActiveResource::Base
     end
   end
 
-  self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/"
+  self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/:user/:sport/"
+  self.element_name = ""
 
 
   schema do
-    string 'username', 'realname', 'email', 'password'
-    integer 'publicvisible'
+    string 'name', 'description', 'id'
   end
 
-  validates :username,  :presence => true, :length => { :maximum => 50 }
-  validates :password, :presence => true, :length => { :minimum => 6 }
-  validates :email, :presence => true, :format => { :with => /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
+
 end
 

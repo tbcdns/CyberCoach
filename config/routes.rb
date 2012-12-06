@@ -9,6 +9,8 @@ CyberCoach::Application.routes.draw do
   match '/signup',  :to => 'users#new'
   # --- SPORTS ---
   resources :sports
+  # --- BOXING ---
+  resources :boxings
   # --- EVENTS ---
   resources :events
   match 'matches/simulate', :to => 'matches#simulate'
