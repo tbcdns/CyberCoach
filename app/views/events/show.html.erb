@@ -115,7 +115,7 @@
       <li class="active"><a href="#lA" data-toggle="tab" id="tab1">Informations</a></li>
       <li><a href="#lB" data-toggle="tab" id="tab2">Matches</a></li>
       <li><a href="#lC" data-toggle="tab" id="tab3">Teams</a></li>
-      <% if !@admin %>
+      <% if @admin %>
        <li><a href="#lD" data-toggle="tab" id="tab4">Admin</a></li>
       <% end %>
     </ul>
@@ -127,6 +127,7 @@
 
         <ul>
           <li>Id : <%= @event.id %></li>
+          <li>Sport : <%= @event.sport_id %></li>
           <li>Name : <%= @event.name %></li>
           <li>Description : <%= @event.description %></li>
           <li>Players : <%=  %>/<%= @event.nb_players %></li>
@@ -147,7 +148,9 @@
           <% end %>
 
           <% if @event.close? && !@taking_part %>
-              <div>This event is full</div>
+            <div class="alert" style="text-align: center;">
+              <strong>Warning!</strong> This event is full.
+            </div>
           <% end %>
 
           <% if @taking_part %>
@@ -234,22 +237,20 @@
           </li>
         </ul>
       </div>
-      <% if !@admin %>
+      <% if @admin %>
       <!--ADMINISTRATION-->
       <div class="tab-pane" id="lD">
         <% level=1 %>
         <% genNextM = true %>
-
-            <h3 style="text-align:center;">List of matches</h3>
             <table>
-              <tr><td colspan="10">Round 1</td> </tr>
+              <tr><td colspan="10"><h4>Round 1</h4></td> </tr>
               <tr>
                 <% @matches.each do |match| %>
                     <% if match.level != level %>
-                        </tr><tr><td colspan="10">Round <%= level+1 %></td> </tr><tr>
-                <% level = match.level %>
+                        </table><table></tr><tr><td colspan="10"><h4>Round <%= level+1 %></h4></td> </tr><tr>
+                         <% level = match.level %>
                     <% end %>
-                    <td style="border:1px solid #d3d3d3;"><b><%= match.team1_nb %></b> VS <b><%= match.team2_nb %></b>
+                    <td style="border:1px solid #d3d3d3;"><span style="text-align: center;"><b><%= match.team1_nb %></b> vs <b><%= match.team2_nb %></b></span>
                       <% if match.winning_team_nb.nil? %>
                           <% genNextM = false %>
                           <%= form_for match, :remote => true do |f|%>
@@ -281,8 +282,10 @@
                           <br>Winner : <%= match.winning_team_nb %>
                       <% end %>
                     </td>
+
+
                 <% end %>
-                </table>
+                 </table>
             <% if genNextM %>
                 <div>Generate next round</div>
                 <%= form_for(@match) do |f| %>
@@ -402,7 +405,7 @@
         bracket = checkedAppend('<div class="bracket"></div>', base);
         var vOffset = checkedAppend('<div></div>', bracket);
         var alignTo = matchDivsByRound[matchInfo.rounds.length - 1][0]; //only 1 match in the last round
-        var html = '<div class="winner"><% if @matches.where(:level => nbRound).first.nil? %> ? <% else %><%= @matches.where(:level => nbRound).first.winning_team_nb %><% end %></div>';
+        var html = '<div class="winner"><% if @matches.where(:level => nbRound).first.nil? %> ? <% else %><% idWinner = @matches.where(:level => nbRound).first.winning_team_nb %><% if @teamNames.where(:team_nb => idWinner).empty? %><%= idWinner %><% else %><%= @teamNames.where(:team_nb => idWinner).first.name %><% end %><% end %></div>';
         var winnerDiv = checkedAppend(html, bracket);
         vOffset.height(alignTo.position().top - winnerDiv.position().top + alignTo.height() / 2 - winnerDiv.height());
     });

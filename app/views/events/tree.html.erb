@@ -162,7 +162,7 @@
         bracket = checkedAppend('<div class="bracket"></div>', base);
         var vOffset = checkedAppend('<div></div>', bracket);
         var alignTo = matchDivsByRound[matchInfo.rounds.length - 1][0]; //only 1 match in the last round
-        var html = '<div class="winner"><% if @matches.where(:level => nbRound).first.nil? %> ? <% else %><%= @matches.where(:level => nbRound).first.winning_team_nb %><% end %></div>';
+        var html = '<div class="winner"><% if @matches.where(:level => nbRound).first.nil? %> ? <% else %><% idWinner = @matches.where(:level => nbRound).first.winning_team_nb %><% if @teamNames.where(:team_nb => idWinner).empty? %><%= idWinner %><% else %><%= @teamNames.where(:team_nb => idWinner).first.name %><% end %><% end %></div>';
         var winnerDiv = checkedAppend(html, bracket);
         vOffset.height(alignTo.position().top - winnerDiv.position().top + alignTo.height() / 2 - winnerDiv.height());
     });

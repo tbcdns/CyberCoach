@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
   def index
     @events = Event.all
+    @sports = ["Boxing", "Cycling", "Running", "Soccer"]
   end
 
   def new

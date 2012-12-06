@@ -25,7 +25,7 @@ class TeamsController < ApplicationController
     @team = Team.new(:event_id => params[:team][:event_id], :user_id => current_user, :team_nb => team_nb)
       if @team.save
         flash[:success] = "You're taking part at this event!"
-        if (free_space == 1 || free_space == 0) && team_nb+1 > nb_teams
+        if (free_space == 1) && team_nb == nb_teams
           Event.update(params[:team][:event_id], :close => 1)
           #generate matches
         end

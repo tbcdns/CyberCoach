@@ -69,56 +69,43 @@
   <div style="clear:both;"></div>
   <div class="tabbable tabs-left" style="border:1px solid #ddd;padding:10px;border-radius: 7px;border-top-right-radius:0px;min-height: 300px;margin-left:100px;">
     <ul class="nav nav-tabs" style="min-height: 0px;margin-left:-131px;">
-      <li class="active"><a href="#lA" data-toggle="tab" id="tab1">Boxing</a></li>
-      <li><a href="#lB" data-toggle="tab" id="tab2">Cycling</a></li>
-      <li><a href="#lC" data-toggle="tab" id="tab3">Running</a></li>
-      <li><a href="#lD" data-toggle="tab" id="tab4">Soccer</a></li>
+      <li class="active"><a href="#Boxing" data-toggle="tab" id="tab1">Boxing</a></li>
+      <li><a href="#Cycling" data-toggle="tab" id="tab2">Cycling</a></li>
+      <li><a href="#Running" data-toggle="tab" id="tab3">Running</a></li>
+      <li><a href="#Soccer" data-toggle="tab" id="tab4">Soccer</a></li>
     </ul>
     <div class="tab-content">
-      <!-- INFORMATIONS -->
-      <div class="tab-pane active" id="lA">
-
-      </div>
-      <!-- LIST OF MATCHES -->
-      <div class="tab-pane" id="lB">
-
-
-
-      </div>
-      <!-- LIST OF TEAMS -->
-      <div class="tab-pane" id="lC">
-
-      </div>
-      <div class="tab-pane" id="lD">
-
-      </div>
+       <% @sports.each do |name| %>
+          <div class="tab-pane active" id="<%= name %>">
+            <table class='table'>
+              <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Location</th>
+                <th>Players/Team</th>
+                <th>Teams</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% Event.where(:sport_id => name).each do |event| %>
+                  <% if event.close == true
+                       state = 'error'
+                     end
+                  %>
+                  <tr class="<%= state %>" onmouseover="bold(<%=event.id %>)" onclick="location.href='<%=url_for(:action => 'show', :id =>  event.id) %>'" onmouseout="normal(<%=event.id %>)" id="<%=event.id %>">
+                    <td><%= event.name %></td>
+                    <td><%= event.description %></td>
+                    <td><%= event.location %></td>
+                    <td><%= event.nb_players %></td>
+                    <td><%= event.teams.count %>/<%= event.nb_teams %></td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+       <% end %>
     </div>
   </div>
-<table class='table'>
-  <thead>
-  <tr>
-    <th>id</th>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Players</th>
-    <th>Teams</th>
-  </tr>
-  </thead>
-<tbody>
-<% @events.each do |event| %>
-<% if event.close == true
-    state = 'error'
-   end
-%>
-    <tr class="<%= state %>" onmouseover="bold(<%=event.id %>)" onclick="location.href='<%=url_for(:action => 'show', :id =>  event.id) %>'" onmouseout="normal(<%=event.id %>)" id="<%=event.id %>">
-      <td><%= event.id %></td>
-      <td><%= event.name %></td>
-      <td><%= event.description %></td>
-      <td><%= event.nb_players %></td>
-      <td><%= event.teams.count %>/<%= event.nb_teams %></td>
-    </tr>
-<% end %>
-</tbody>
-</table>
- <div style='width:100px; background-color: #F2DEDE;'>Closed event</div>
+ <div style='width:95px;text-align: center; background-color: #F2DEDE;margin-top:20px;margin-left:700px;'>Closed event</div>
 </div>
