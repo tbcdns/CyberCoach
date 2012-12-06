@@ -19,13 +19,37 @@ class UsersController < ApplicationController
     begin
       @user = User.find(params[:id])
       @boxing = Subscription.find(:all, :params => {:sport => "Boxing", :user => @user.username, :start => 0, :size => 500 })
-      @entries = Array.new
-  @boxing.each do |b|
-                     puts b.id
-     @entries = Entry.find(:all, :params => {:sport => "Boxing", :user => @user.username, :entry_id => b.id})
-     #puts "entries : #{@entries}"
+      @soccer = Subscription.find(:all, :params => {:sport => "Soccer", :user => @user.username, :start => 0, :size => 500 })
+      @cycling = Subscription.find(:all, :params => {:sport => "Cycling", :user => @user.username, :start => 0, :size => 500 })
+      @running = Subscription.find(:all, :params => {:sport => "Running", :user => @user.username, :start => 0, :size => 500 })
 
-  end
+      @boxing_entries = Array.new
+      if !@boxing.nil?
+        @boxing.each do |b|
+          @boxing_entries.push(Entry.find(:all, :params => {:sport => "Boxing", :user => @user.username, :entry_id => b.id}))
+        end
+      end
+
+      @soccer_entries = Array.new
+      if !@soccer.nil?
+        @soccer.each do |b|
+          @soccer_entries.push(Entry.find(:all, :params => {:sport => "Soccer", :user => @user.username, :entry_id => b.id}))
+        end
+      end
+
+      @cycling_entries = Array.new
+      if !@cycling.nil?
+        @cycling.each do |b|
+          @cycling_entries.push(Entry.find(:all, :params => {:sport => "Cycling", :user => @user.username, :entry_id => b.id}))
+        end
+      end
+
+      @running_entries = Array.new
+      if !@running.nil?
+        @running.each do |b|
+          @running_entries.push(Entry.find(:all, :params => {:sport => "Running", :user => @user.username, :entry_id => b.id}))
+        end
+      end
 
     rescue Exception => e
       flash[:error] = e.message

@@ -71,11 +71,46 @@
       </div>
       <!-- LIST OF TEAMS -->
       <div class="tab-pane" id="lC">
-            <h2 style='text-align: left;'>Boxing</h2>
-        <% @boxing.each do |b| %>
-        <%=  b.id %>
-      <% end %>
-             <%= debug @boxing %>
+        <h2 style='text-align: left;'>Boxing</h2>
+        <ul>
+          <% @boxing_entries.each do |b| %>
+              <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Round duration : <%= b['roundduration'] %></li>
+          <% end %>
+        </ul>
+
+        <h2 style='text-align: left;'>Cycling</h2>
+        <ul>
+        <% if @cycling_entries.empty? %>
+              No entry
+        <% else %>
+          <% @cycling_entries.each do |b| %>
+          <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Bicycle type : <%= b['bicycletype'] %>, course type <%= b['coursetype'] %></li>
+          <% end %>
+        <% end %>
+        </ul>
+
+        <h2 style='text-align: left;'>Soccer</h2>
+        <ul>
+        <% if @soccer_entries.empty? %>
+              No entry
+        <% else %>
+           <% @soccer_entries.each do |b| %>
+           <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
+           <% end %>
+        <% end %>
+        </ul>
+
+        <h2 style='text-align: left;'>Running</h2>
+        <ul>
+          <% if @running_entries.nil? %>
+              No entry
+          <% else %>
+              <% @running_entries.each do |b| %>
+                  <li>in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
+              <% end %>
+          <% end %>
+        </ul>
+
       </div>
     </div>
   </div>

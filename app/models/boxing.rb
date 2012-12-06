@@ -1,6 +1,13 @@
 require 'active_resource'
 
+class BoxingXMLFormatter
+  include ActiveResource::Formats::XmlFormat
 
+  def decode(xml)
+    puts "myxml : #{xml}"
+    ActiveResource::Formats::XmlFormat.decode(xml)['test']
+  end
+end
 
 class Boxing < ActiveResource::Base
   class << self
@@ -12,15 +19,19 @@ class Boxing < ActiveResource::Base
 
     def collection_path(prefix_options = {}, query_options = nil)
       check_prefix_options(prefix_options)
-      prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-      "#{prefix(prefix_options)}#{query_string(query_options)}"
+      prefix_options, query_options = split_options(prefix_options) if
+          query_options.nil?
+      "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
     end
 
+
     def instantiate_collection(collection, prefix_options = {})
+
+
       puts "boxing===> #{collection}"
       #puts "====== entry name == #{element_name}"
-      collection = collection[element_name] if collection.instance_of?(Hash)
-      collection.collect! { |record| instantiate_record(record, prefix_options) }
+      collection = collection if collection.instance_of?(Hash)
+      #collection.collect! { |record| instantiate_record(record, prefix_options) }
 
     end
 
@@ -36,8 +47,9 @@ class Boxing < ActiveResource::Base
 
   self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/:user/Boxing/:entry_id"
 
-  self.element_name = "entryboxing"
+  self.element_name = ""
 
+  #self.format = BoxingXMLFormatter.new
 
 
 

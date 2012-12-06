@@ -1,7 +1,7 @@
 class SubscriptionsController < ApplicationController
   def index
 
-    @boxing= Boxing.find(:all, :params => {:sport => "Boxing", :user => 'fred', :entry_id => 142})
+    @boxing= Entry.find(:all, :params => {:sport => "Soccer", :user => 'fred', :entry_id => 154})
 
     puts "boxing : #{@boxing}"
   end
