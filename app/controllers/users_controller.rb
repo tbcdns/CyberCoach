@@ -23,6 +23,7 @@ class UsersController < ApplicationController
       @cycling = Subscription.find(:all, :params => {:sport => "Cycling", :user => @user.username, :start => 0, :size => 500 })
       @running = Subscription.find(:all, :params => {:sport => "Running", :user => @user.username, :start => 0, :size => 500 })
 
+
       @boxing_entries = Array.new
       if !@boxing.nil?
         @boxing.each do |b|

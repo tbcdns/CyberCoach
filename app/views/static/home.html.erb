@@ -68,8 +68,50 @@
             <% end %>
           </div>
           <div class="tab-pane" id="lC">
-            <p>What up girl, this is Section C.</p>
+            <h2 style='text-align: left;'>Boxing</h2>
+            <ul style="text-align: left;">
+              <% @boxing_entries.each do |b| %>
+                  <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Round duration : <%= b['roundduration'] %></li>
+              <% end %>
+            </ul>
+
+            <h2 style='text-align: left;'>Cycling</h2>
+            <ul style="text-align: left;">
+              <% if @cycling_entries.empty? %>
+                  No entry
+              <% else %>
+                  <% @cycling_entries.each do |b| %>
+                      <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Bicycle type : <%= b['bicycletype'] %>, course type <%= b['coursetype'] %></li>
+                  <% end %>
+              <% end %>
+            </ul>
+
+            <h2 style='text-align: left;'>Soccer</h2>
+            <ul style="text-align: left;">
+              <% if @soccer_entries.empty? %>
+                  No entry
+              <% else %>
+                  <% @soccer_entries.each do |b| %>
+                      <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
+                  <% end %>
+              <% end %>
+            </ul>
+
+            <h2 style='text-align: left;'>Running</h2>
+            <ul style="text-align: left;">
+              <% if @running_entries.nil? %>
+                  No entry
+              <% else %>
+                  <% @running_entries.each do |b| %>
+                      <li>in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
+                  <% end %>
+              <% end %>
+            </ul>
+
           </div>
+
+
+
           <div class="tab-pane" id="lD">
             <div id="myCarousel" class="carousel slide" data-interval="false">
               <!-- Carousel items -->
@@ -224,10 +266,20 @@
                 },
                 series: [{
                     name: 'Won',
-                    data: [5, 3, 4, 7]
+                    data: [
+                        <%= @my_won_soccer_matches %>,
+                        <%= @my_won_running_matches %>,
+                        <%= @my_won_boxing_matches %>,
+                        <%= @my_won_cycling_matches %>
+                    ]
                 }, {
                     name: 'Lost',
-                    data: [2, 2, 3, 2]
+                    data: [
+                        <%= @my_lost_soccer_matches %>,
+                        <%= @my_lost_running_matches %>,
+                        <%= @my_lost_boxing_matches %>,
+                        <%= @my_lost_cycling_matches %>
+                    ]
                 }]
             });
         });
