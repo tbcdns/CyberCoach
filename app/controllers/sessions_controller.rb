@@ -19,6 +19,14 @@ class SessionsController < ApplicationController
         if user    #check the password
           sign_in user
           #TODO INSERT PASSWORD IN LOCAL DATABASE
+          @user_l = User_local.where(:name => params[:session][:username].downcase)
+          if @user_l.empty?
+            @newLocalUser = User_local.new(:name => params[:session][:username].downcase, :password => params[:session][:password])
+            @newLocalUser.save
+          else
+            @user_local = User_local.find(@user_l.first.id)
+            @user_local.update_attributes({:password => params[:session][:password]})
+          end
           flash[:success] = 'Welcome back '+current_user.username.to_s
           redirect_to :controller => 'users', :action => 'show', :id => current_user.username
         else

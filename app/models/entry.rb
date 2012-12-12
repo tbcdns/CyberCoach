@@ -11,8 +11,7 @@ class Entry < ActiveResource::Base
 
     def collection_path(prefix_options = {}, query_options = nil)
       check_prefix_options(prefix_options)
-      prefix_options, query_options = split_options(prefix_options) if
-          query_options.nil?
+      prefix_options, query_options = split_options(prefix_options) if query_options.nil?
       "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
     end
 

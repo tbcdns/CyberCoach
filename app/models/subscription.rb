@@ -17,7 +17,9 @@ class Subscription < ActiveResource::Base
     def instantiate_collection(collection, prefix_options = {})
       puts "===> #{collection}"
       collection = collection['entries'] if collection.instance_of?(Hash)
-      collection.collect! { |record| instantiate_record(record, prefix_options) }
+      if !collection.nil?
+        collection.collect! { |record| instantiate_record(record, prefix_options) }
+      end
     end
 
 

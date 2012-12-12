@@ -1,7 +1,9 @@
 class StaticController < ApplicationController
   def home
+    if(signed_in?)
     @my_events = Event.find_all_by_user_id(current_user)
     @recent_events = Event.order(:begin).where(:close => 0).limit(5)
+
 
     @boxing = Subscription.find(:all, :params => {:sport => "Boxing", :user => current_user, :start => 0, :size => 500 })
     @soccer = Subscription.find(:all, :params => {:sport => "Soccer", :user => current_user, :start => 0, :size => 500 })
@@ -15,28 +17,28 @@ class StaticController < ApplicationController
     @boxing_entries = Array.new
     if !@boxing.nil?
       @boxing.each do |b|
-        @boxing_entries.push(Entry.find(:all, :params => {:sport => "Boxing", :user => current_user, :entry_id => b.id}))
+        @boxing_entries.push(Entry.find(:all, :params => {:sport => "Boxing", :user => current_user, :entry_id => b.entryboxing.id}))
       end
     end
 
     @soccer_entries = Array.new
     if !@soccer.nil?
       @soccer.each do |b|
-        @soccer_entries.push(Entry.find(:all, :params => {:sport => "Soccer", :user => current_user, :entry_id => b.id}))
+        @soccer_entries.push(Entry.find(:all, :params => {:sport => "Soccer", :user => current_user, :entry_id => b.entrysoccer.id}))
       end
     end
 
     @cycling_entries = Array.new
     if !@cycling.nil?
       @cycling.each do |b|
-        @cycling_entries.push(Entry.find(:all, :params => {:sport => "Cycling", :user => current_user, :entry_id => b.id}))
+        @cycling_entries.push(Entry.find(:all, :params => {:sport => "Cycling", :user => current_user, :entry_id => b.entrycycling.id}))
       end
     end
 
     @running_entries = Array.new
     if !@running.nil?
       @running.each do |b|
-        @running_entries.push(Entry.find(:all, :params => {:sport => "Running", :user => current_user, :entry_id => b.id}))
+        @running_entries.push(Entry.find(:all, :params => {:sport => "Running", :user => current_user, :entry_id => b.entryrunning.id}))
       end
     end
 
@@ -132,7 +134,7 @@ class StaticController < ApplicationController
 
 
     puts "total #{@nb_total}"
-
+    end
     @skip_login = true
   end
 end

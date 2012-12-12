@@ -106,7 +106,7 @@
               No entry
           <% else %>
               <% @running_entries.each do |b| %>
-                  <li>in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
+                  <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
               <% end %>
           <% end %>
         </ul>

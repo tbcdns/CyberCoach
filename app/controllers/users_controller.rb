@@ -27,33 +27,33 @@ class UsersController < ApplicationController
       @boxing_entries = Array.new
       if !@boxing.nil?
         @boxing.each do |b|
-          @boxing_entries.push(Entry.find(:all, :params => {:sport => "Boxing", :user => @user.username, :entry_id => b.id}))
+          @boxing_entries.push(Entry.find(:all, :params => {:sport => "Boxing", :user => @user.username, :entry_id => b.entryboxing.id}))
         end
       end
 
       @soccer_entries = Array.new
       if !@soccer.nil?
         @soccer.each do |b|
-          @soccer_entries.push(Entry.find(:all, :params => {:sport => "Soccer", :user => @user.username, :entry_id => b.id}))
+          @soccer_entries.push(Entry.find(:all, :params => {:sport => "Soccer", :user => @user.username, :entry_id => b.entrysoccer.id}))
         end
       end
 
       @cycling_entries = Array.new
       if !@cycling.nil?
         @cycling.each do |b|
-          @cycling_entries.push(Entry.find(:all, :params => {:sport => "Cycling", :user => @user.username, :entry_id => b.id}))
+          @cycling_entries.push(Entry.find(:all, :params => {:sport => "Cycling", :user => @user.username, :entry_id => b.entrycycling.id}))
         end
       end
 
       @running_entries = Array.new
       if !@running.nil?
         @running.each do |b|
-          @running_entries.push(Entry.find(:all, :params => {:sport => "Running", :user => @user.username, :entry_id => b.id}))
+          @running_entries.push(Entry.find(:all, :params => {:sport => "Running", :user => @user.username, :entry_id => b.entryrunning.id}))
         end
       end
 
     rescue Exception => e
-      flash[:error] = e.message
+      flash[:error] = "Error : "+e.message
       redirect_to '/users/'
     end
   end
