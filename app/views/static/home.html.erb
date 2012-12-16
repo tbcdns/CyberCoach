@@ -54,77 +54,15 @@
               </table>
           </div>
           <div class="tab-pane" id="lB">
-            <% @my_events.each do |event| %>
-                <p>
-                  <%= link_to event.name, event %>
-                  <%= event.sport_id %>
-                  <%= event.begin %>
-                  <%= if event.close?
-                        'yes'
-                      else
-                        'no'
-                      end %>
-                </p>
-            <% end %>
-          </div>
-          <div class="tab-pane" id="lC">
-            <h2 style='text-align: left;'>Boxing</h2>
-            <ul style="text-align: left;">
-              <% @boxing_entries.each do |b| %>
-                  <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Round duration : <%= b['roundduration'] %></li>
-              <% end %>
-            </ul>
 
-            <h2 style='text-align: left;'>Cycling</h2>
-            <ul style="text-align: left;">
-              <% if @cycling_entries.empty? %>
-                  No entry
-              <% else %>
-                  <% @cycling_entries.each do |b| %>
-                      <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Bicycle type : <%= b['bicycletype'] %>, course type <%= b['coursetype'] %></li>
-                  <% end %>
-              <% end %>
-            </ul>
-
-            <h2 style='text-align: left;'>Soccer</h2>
-            <ul style="text-align: left;">
-              <% if @soccer_entries.empty? %>
-                  No entry
-              <% else %>
-                  <% @soccer_entries.each do |b| %>
-                      <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
-                  <% end %>
-              <% end %>
-            </ul>
-
-            <h2 style='text-align: left;'>Running</h2>
-            <ul style="text-align: left;">
-              <% if @running_entries.nil? %>
-                  No entry
-              <% else %>
-                  <% @running_entries.each do |b| %>
-                      <li>in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
-                  <% end %>
-              <% end %>
-            </ul>
 
           </div>
 
 
 
-          <div class="tab-pane" id="lD">
-            <div id="myCarousel" class="carousel slide" data-interval="false">
-              <!-- Carousel items -->
-              <div class="carousel-inner">
-                <div class="active item"><div id="container" style="width: 650px; height: 400px; margin: 0 auto"></div></div>
-                <div class="item"><div id="container1" style="width: 650px; height: 400px; margin: 0 auto"></div></div>
-                <div class="item"><div id="container2" style="width: 650px; height: 400px; margin: 0 auto"></div></div>
-              </div>
-              <!-- Carousel nav -->
-              <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-              <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-            </div>
-
+          <div class="tab-pane" id="lD" style="overflow: none;">
+              Loading ... Please wait<br>
+              <%= image_tag("ajax-loader.gif") %>
           </div>
         </div>
       </div><br>
@@ -142,6 +80,11 @@
 
 <script>
     $(function () {
+
+        $("#tab4").click(function() {
+            $("#lD").load("/static/stats/");
+        });
+
         $('#tab1').click(function(){
             $('#title').html('Next Events');
         });
@@ -153,135 +96,6 @@
         });
         $('#tab4').click(function(){
             $('#title').html('My Statistics');
-        });
-        var chart;
-        $(document).ready(function() {
-
-            // Radialize the colors
-            Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function(color) {
-                return {
-                    radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
-                    stops: [
-                        [0, color],
-                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
-                    ]
-                };
-            });
-
-            // Build the chart
-            chart = new Highcharts.Chart({
-                chart: {
-                    renderTo: 'container',
-                    backgroundColor: '#EEE',
-                    plotBorderWidth: null,
-                    plotShadow: false
-                },
-                title: {
-                    text: 'Browser market shares at a specific website, 2010'
-                },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage}%</b>',
-                    percentageDecimals: 1
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            color: '#000000',
-                            connectorColor: '#000000',
-                            formatter: function() {
-                                return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
-                            }
-                        }
-                    }
-                },
-                series: [{
-                    type: 'pie',
-                    name: 'Sports repartition',
-                    data: [
-                        ['Soccer',   <%= @nb_soccer %>],
-                        ['Running',  <%= @nb_running %>],
-                        ['Boxing',    <%= @nb_boxing %>],
-                        ['Cycling',     <%= @nb_cycling %>]
-                    ]
-                }]
-            });
-        });
-
-        var chart;
-        $(document).ready(function() {
-            chart = new Highcharts.Chart({
-                chart: {
-                    renderTo: 'container1',
-                    type: 'column',
-                    backgroundColor: '#EEE'
-                },
-                title: {
-                    text: 'Number of matches won and lost'
-                },
-                xAxis: {
-                    categories: ['Soccer', 'Running', 'Boxing', 'Cycling']
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: '# of Matches'
-                    },
-                    stackLabels: {
-                        enabled: true,
-                        style: {
-                            fontWeight: 'bold',
-                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                        }
-                    }
-                },
-                legend: {
-                    align: 'right',
-                    x: -20,
-                    verticalAlign: 'top',
-                    y: 0,
-                    floating: true,
-                    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColorSolid) || 'white',
-                    borderColor: '#CCC',
-                    borderWidth: 1,
-                    shadow: false
-                },
-                tooltip: {
-                    formatter: function() {
-                        return '<b>'+ this.x +'</b><br/>'+
-                                this.series.name +': '+ this.y +'<br/>'+
-                                'Total: '+ this.point.stackTotal;
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        stacking: 'normal',
-                        dataLabels: {
-                            enabled: true,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Won',
-                    data: [
-                        <%= @my_won_soccer_matches %>,
-                        <%= @my_won_running_matches %>,
-                        <%= @my_won_boxing_matches %>,
-                        <%= @my_won_cycling_matches %>
-                    ]
-                }, {
-                    name: 'Lost',
-                    data: [
-                        <%= @my_lost_soccer_matches %>,
-                        <%= @my_lost_running_matches %>,
-                        <%= @my_lost_boxing_matches %>,
-                        <%= @my_lost_cycling_matches %>
-                    ]
-                }]
-            });
         });
 
     })

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<% if !@skip_top %><!DOCTYPE html>
 <html>
 <head>
   <title><%= yield(:title) %></title>
@@ -17,7 +17,9 @@
         <button type="button" class="close" data-dismiss="alert">×</button>
         <%= value %></div>
   <% end %>
+  <% end %>
   <% if signed_in? or @skip_login %>
+
   <%= yield %>
   <% else %>
       <div class="alert alert-block alert-error">
