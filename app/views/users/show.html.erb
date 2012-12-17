@@ -48,6 +48,7 @@
       <li class="active"><a href="#lA" data-toggle="tab" id="tab1">Informations</a></li>
       <li><a href="#lB" data-toggle="tab" id="tab2">Friends</a></li>
       <li><a href="#lC" data-toggle="tab" id="tab3">Results</a></li>
+      <li><a href="#lD" data-toggle="tab" id="tab4">Statistics</a></li>
     </ul>
     <div class="tab-content">
       <!-- INFORMATIONS -->
@@ -116,6 +117,10 @@
         </ul>
 
       </div>
+      <div class="tab-pane" id="lD" style="overflow: none;text-align:center;">
+        Loading ... Please wait<br><br>
+        <%= image_tag("ajax-loader.gif") %>
+      </div>
     </div>
   </div>
 
@@ -130,4 +135,9 @@ $('#title').html($(this).html());
 $('#tab3').click(function(){
 $('#title').html($(this).html());
 });
+$('#tab4').click(function(){
+  $('#title').html($(this).html());
+  $("#lD").load("/users/stats/<%= params[:id] %>");
+});
+
 </script>

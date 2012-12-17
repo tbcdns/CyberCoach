@@ -1,0 +1,164 @@
+<div id="myCarousel" class="carousel slide" data-interval="false" style="width:680px;">
+  <!-- Carousel items -->
+  <div class="carousel-inner">
+    <div class="active item"><div id="container" style="width: 650px; height: 400px; margin: 0 auto"></div></div>
+    <div class="item"><div id="container1" style="width: 650px; height: 400px; margin: 0 auto"></div></div>
+    <div class="item"><div id="container2" style="width: 650px; height: 400px; margin: 0 auto">
+      <p>Your points : <b><%= ((@my_won_soccer_matches*3)+(@my_lost_soccer_matches)+(@my_won_boxing_matches*3)+@my_lost_boxing_matches+(@my_won_cycling_matches*3)+@my_lost_cycling_matches+(@my_won_running_matches*3)+@my_lost_running_matches) %></b></p>
+      <p>Soccer : <%= showIcon(((@my_won_soccer_matches.to_f/(@my_won_soccer_matches.to_f+@my_lost_soccer_matches.to_f))*100)) %> </p>
+      <p>Running :<%= showIcon(((@my_won_running_matches.to_f/(@my_won_running_matches.to_f+@my_lost_running_matches.to_f))*100)) %>  </p>
+      <p>Boxing : <%= showIcon(((@my_won_boxing_matches.to_f/(@my_won_boxing_matches.to_f+@my_lost_boxing_matches.to_f))*100)) %>  </p>
+      <p>Cycling : <%= showIcon(((@my_won_cycling_matches.to_f/(@my_won_cycling_matches.to_f+@my_lost_cycling_matches.to_f))*100)) %>   </p>
+    </div></div>
+  </div>
+  <!-- Carousel nav -->
+  <a class="carousel-control left" href="#myCarousel" data-slide="prev" style="margin-left:-15px;">&lsaquo;</a>
+  <a class="carousel-control right" href="#myCarousel" data-slide="next" style="margin-right:-15px;">&rsaquo;</a>
+</div>
+<script>
+    $(function () {
+        $('#tab1').click(function(){
+            $('#title').html('Next Events');
+        });
+        $('#tab2').click(function(){
+            $('#title').html('My Events');
+        });
+        $('#tab3').click(function(){
+            $('#title').html('My Matches');
+        });
+        $('#tab4').click(function(){
+            $('#title').html('My Statistics');
+        });
+        var chart;
+        $(document).ready(function() {
+
+            // Radialize the colors
+            Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function(color) {
+                return {
+                    radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                    stops: [
+                        [0, color],
+                        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                    ]
+                };
+            });
+
+            // Build the chart
+            chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    backgroundColor: '#EEE',
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Sports distribution'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+                    percentageDecimals: 1
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            color: '#000000',
+                            connectorColor: '#000000',
+                            formatter: function() {
+                                return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Sports distribution',
+                    data: [
+                        ['Soccer',   <%= if @nb_total == 0 then 0 else ((@nb_soccer.to_f/@nb_total.to_f)*100).round(2) end %>],
+                        ['Running',  <%= if @nb_total == 0 then 0 else ((@nb_running.to_f/@nb_total.to_f)*100).round(2) end %>],
+                        ['Boxing',    <%= if @nb_total == 0 then 0 else ((@nb_boxing.to_f/@nb_total.to_f)*100).round(2) end %>],
+                        ['Cycling',     <%= if @nb_total == 0 then 0 else ((@nb_cycling.to_f/@nb_total.to_f)*100).round(2) end %>]
+                    ]
+                }]
+            });
+        });
+
+        var chart;
+        $(document).ready(function() {
+            chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container1',
+                    type: 'column',
+                    backgroundColor: '#EEE'
+                },
+                title: {
+                    text: 'Number of matches won and lost'
+                },
+                xAxis: {
+                    categories: ['Soccer', 'Running', 'Boxing', 'Cycling']
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '# of Matches'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                        }
+                    }
+                },
+                legend: {
+                    align: 'right',
+                    x: -20,
+                    verticalAlign: 'top',
+                    y: 0,
+                    floating: true,
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColorSolid) || 'white',
+                    borderColor: '#CCC',
+                    borderWidth: 1,
+                    shadow: false
+                },
+                tooltip: {
+                    formatter: function() {
+                        return '<b>'+ this.x +'</b><br/>'+
+                                this.series.name +': '+ this.y +'<br/>'+
+                                'Total: '+ this.point.stackTotal;
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Won',
+                    data: [
+                        <%= @my_won_soccer_matches %>,
+                        <%= @my_won_running_matches %>,
+                        <%= @my_won_boxing_matches %>,
+                        <%= @my_won_cycling_matches %>
+                    ]
+                }, {
+                    name: 'Lost',
+                    data: [
+                        <%= @my_lost_soccer_matches %>,
+                        <%= @my_lost_running_matches %>,
+                        <%= @my_lost_boxing_matches %>,
+                        <%= @my_lost_cycling_matches %>
+                    ]
+                }]
+            });
+        });
+
+    })
+
+</script>
