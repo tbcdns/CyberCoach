@@ -73,9 +73,13 @@
       <div class="tab-pane" id="lC">
         <h2 style='text-align: left;'>Boxing</h2>
         <ul>
+          <% if @boxing_entries.empty? %>
+              No entry
+          <% else %>
           <% @boxing_entries.each do |b| %>
               <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Round duration : <%= b['roundduration'] %></li>
           <% end %>
+         <% end %>
         </ul>
 
         <h2 style='text-align: left;'>Cycling</h2>
@@ -102,7 +106,7 @@
 
         <h2 style='text-align: left;'>Running</h2>
         <ul>
-          <% if @running_entries.nil? %>
+          <% if @running_entries.empty? %>
               No entry
           <% else %>
               <% @running_entries.each do |b| %>
@@ -116,3 +120,14 @@
   </div>
 
 </div>
+<script type="text/javascript">
+$('#tab1').click(function(){
+$('#title').html($(this).html());
+});
+$('#tab2').click(function(){
+$('#title').html($(this).html());
+});
+$('#tab3').click(function(){
+$('#title').html($(this).html());
+});
+</script>

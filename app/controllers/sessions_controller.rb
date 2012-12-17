@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
       else
         if user    #check the password
           sign_in user
-          #TODO INSERT PASSWORD IN LOCAL DATABASE
+
           @user_l = User_local.where(:name => params[:session][:username].downcase)
           if @user_l.empty?
             @newLocalUser = User_local.new(:name => params[:session][:username].downcase, :password => params[:session][:password])

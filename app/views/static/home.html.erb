@@ -35,7 +35,7 @@
         <ul class="nav nav-tabs" style="min-height: 0px;margin-left:-131px;">
           <li class="active"><a href="#lA" data-toggle="tab" id="tab1">Next events</a></li>
           <li><a href="#lB" data-toggle="tab" id="tab2">My events</a></li>
-          <li><a href="#lC" data-toggle="tab" id="tab3">My matches</a></li>
+          <li><a href="#lC" data-toggle="tab" id="tab3">Next matches</a></li>
           <li><a href="#lD" data-toggle="tab" id="tab4">My stats</a></li>
         </ul>
         <div class="tab-content">
@@ -54,14 +54,35 @@
               </table>
           </div>
           <div class="tab-pane" id="lB">
+            <table class="table table-hover">
+              <tr><td><b>Name</b></td><td><b>Sport</b></td><td><b>Start</b></td><td><b>End</b></td></tr>
+              <% @my_events.each do |event| %>
+                  <tr>
+                    <td><%= link_to event.name, event %></td>
+                    <td><%= event.sport_id %></td>
+                    <td><%= event.begin %></td>
+                    <td><%= event.end %></td>
 
+                  </tr>
+              <% end %>
+            </table>
 
           </div>
 
-
+          <div class="tab-pane" id="lC">
+            <table class="table table-hover">
+              <tr><td><b>Event name</b></td><td><b>Sport</b></td><td><b>Date</b></td><td><b>Round</b></td></tr>
+           <% @my_next_matches.each do |match| %>
+              <% event = Event.find(match[0]) %>
+              <tr>
+               <td><%= event.name %></td><td><%= event.sport_id %></td><td><%= match[1] %></td><td><%= match[2] %></td>
+             </tr>
+            <% end %>
+             </table>
+          </div>
 
           <div class="tab-pane" id="lD" style="overflow: none;">
-              Loading ... Please wait<br>
+              Loading ... Please wait<br><br>
               <%= image_tag("ajax-loader.gif") %>
           </div>
         </div>

@@ -29,7 +29,7 @@
       </div>
   <% end %>
   <%= render 'layouts/footer'unless @skip_footer %>
-  <%= debug(params) if Rails.env.development? unless @skip_footer %>
+  <% debug(params) if Rails.env.development? unless @skip_footer %>
 </div>
 </body>
 </html>

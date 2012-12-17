@@ -68,8 +68,8 @@ class UsersController < ApplicationController
     flash[:error] = e.message
     redirect_to '/users/add'
     else
-    flash[:success] = params[:user][:username]+' sucessfully created'
-    redirect_to "/users/"+params[:user][:username]
+    flash[:success] = params[:user][:username]+' sucessfully created, please login'
+    redirect_to "/signin"
     end
     #@user = User.add(params[:user]).put(params[:user][:username])
 

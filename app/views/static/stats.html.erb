@@ -12,8 +12,8 @@
     </div></div>
   </div>
   <!-- Carousel nav -->
-  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+  <a class="carousel-control left" href="#myCarousel" data-slide="prev" style="margin-left:-15px;">&lsaquo;</a>
+  <a class="carousel-control right" href="#myCarousel" data-slide="next" style="margin-right:-15px;">&rsaquo;</a>
 </div>
 <script>
     $(function () {
@@ -52,7 +52,7 @@
                     plotShadow: false
                 },
                 title: {
-                    text: 'Browser market shares at a specific website, 2010'
+                    text: 'Sports distribution'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage}%</b>',
@@ -74,7 +74,7 @@
                 },
                 series: [{
                     type: 'pie',
-                    name: 'Sports repartition',
+                    name: 'Sports distribution',
                     data: [
                         ['Soccer',   <%= if @nb_total == 0 then 0 else ((@nb_soccer.to_f/@nb_total.to_f)*100).round(2) end %>],
                         ['Running',  <%= if @nb_total == 0 then 0 else ((@nb_running.to_f/@nb_total.to_f)*100).round(2) end %>],

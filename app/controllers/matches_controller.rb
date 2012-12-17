@@ -24,8 +24,8 @@ class MatchesController < ApplicationController
       i += 1
 
       end
-      flash[:success] = "New matches"+params[:match][:event_id]
-      redirect_to "/events/"
+      flash[:success] = "Round successfully created"
+      redirect_to "/events/"+params[:match][:event_id]
       #generate first round
     else
       #check for previous matches
@@ -54,8 +54,8 @@ class MatchesController < ApplicationController
         i += 1
       end
 
-      flash[:success] = "level : "+level.to_s
-      redirect_to "/events/"
+      flash[:success] = "Round successfully created"
+      redirect_to "/events/"+params[:match][:event_id]
     end
   end
 

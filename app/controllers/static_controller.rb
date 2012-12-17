@@ -1,8 +1,20 @@
 class StaticController < ApplicationController
   def home
     if(signed_in?)
+     time = Time.now.to_s(:db)
+     time_now = time.split(" ")
     @my_events = Event.find_all_by_user_id(current_user)
-    @recent_events = Event.order(:begin).where(:close => 0).limit(5)
+    @recent_events = Event.order(:begin).where("close = 0 AND begin > "+time_now[0]).limit(5)
+    my_teams = Team.where(:user_id => current_user)
+    @my_next_matches = []
+    my_teams.each do |event|
+      if !Match.where("event_id = "+event.event_id.to_s+" AND ISNULL(winning_team_nb)").order("level DESC").first.nil?
+        if Match.where(:event_id => event.event_id).order("level DESC").first.date > Time.now.to_date
+          match_infos = Match.where(:event_id => event.event_id).order("level DESC").first
+        @my_next_matches.push([match_infos.event_id, match_infos.date, match_infos.level])
+          end
+      end
+    end
 
 
 

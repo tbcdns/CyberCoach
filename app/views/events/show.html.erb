@@ -123,7 +123,15 @@
       <!-- INFORMATIONS -->
       <div class="tab-pane active" id="lA">
 
+        <% if @event.close? && !@taking_part %>
+            <div class="alert" style="text-align: center;">
+              <strong>Warning!</strong> This event is full.
+            </div>
+        <% end %>
 
+        <% if @taking_part %>
+            <div>You're taking part at this event</div>
+        <% end %>
 
         <ul>
           <li>Id : <%= @event.id %></li>
@@ -138,6 +146,7 @@
                 Teams : 0/<%= @event.nb_teams %>
             <% end %>
           </li>
+          <li>Next round : <%= @next_round %></li>
         </ul>
           <% if !@event.close? && @taking_part == false %>
               <%= form_for(@team) do |f| %>
@@ -147,15 +156,7 @@
               <% end %>
           <% end %>
 
-          <% if @event.close? && !@taking_part %>
-            <div class="alert" style="text-align: center;">
-              <strong>Warning!</strong> This event is full.
-            </div>
-          <% end %>
 
-          <% if @taking_part %>
-              <div>You're taking part at this event</div>
-          <% end %>
           <div class="modal hide fade" id="myModal">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -197,7 +198,7 @@
                       </li>
                       <li style='list-style-type: disc;padding-top: 5px;'><strong>Team <%= t.team_nb %>
                       <% if @teamNames.where(:team_nb => t.team_nb).empty? %>
-                            </strong>
+                            <span id="name-<%= t.team_nb.to_s %>"></span></strong>
                             <% if !@teams.where(:team_nb => t.team_nb, :user_id => @current_user).empty? %>
 
                             <%= link_to("Add name", "#", :id => "addName-"+t.team_nb.to_s, :class => t.team_nb.to_s) %>
@@ -206,21 +207,21 @@
                                   <%= f.hidden_field :event_id, :value => params[:id] %>
                                   <%= f.hidden_field :team_nb, :value => t.team_nb %>
                                   <%= f.label :name %>
-                                  <%= f.text_field :name, :style => 'width:100px;' %>
+                                  <%= f.text_field :name, :style => 'width:100px;', :id => 'addFormName-'+t.team_nb.to_s %>
 
-                                  <%= f.submit "Add team name", :class => "btn btn-primary btn-small" %>
+                                  <%= f.submit "Add team name", :class => "btn btn-primary btn-small", :id => "addSubmitName-"+t.team_nb.to_s, :name => t.team_nb.to_s %>
                               <% end %>
                             </span>
                             <% end %>
                       <% else %>
-                        [<%= @teamNames.where(:team_nb => t.team_nb).first.name %>]</strong>
+                        <span id="name-<%= t.team_nb %>">[<%= @teamNames.where(:team_nb => t.team_nb).first.name %>]</span></strong>
                             <% if !@teams.where(:team_nb => t.team_nb, :user_id => @current_user).empty? %>
                             <%= link_to("Change name", "#", :id => "addName-"+t.team_nb.to_s, :class => t.team_nb.to_s) %>
                             <span id="addNameForm-<%= t.team_nb.to_s %>">
                               <%= form_for @teamNames.find(@teamNames.where(:team_nb => t.team_nb).first.id), :remote => true do |f| %>
                                   <%= f.hidden_field :id, :value => @teamNames.where(:team_nb => t.team_nb).first.id %>
 
-                                  <%= f.text_field :name, :style => 'width:150px;' %>
+                                  <%= f.text_field :name, :style => 'width:150px;', :id => 'upFormName-'+t.team_nb.to_s %>
 
                                   <%= f.submit "Change team name", :class => "btn btn-primary btn-small", :style => 'margin-top:-10px;', :id => 'submitName-'+t.team_nb.to_s, :name => t.team_nb.to_s %>
                               <% end %>
@@ -286,6 +287,9 @@
 
                 <% end %>
                  </table>
+              <% if (@event.nb_teams / (2**level)) == 1 %>
+                     <% genNextM = false %>
+                  <% end %>
             <% if genNextM %>
                 <div>Generate next round</div>
                 <%= form_for(@match) do |f| %>
@@ -337,8 +341,17 @@
         $('input[id*="submitName"]').click(function(){
             var id = $(this).attr("name");
             $('#addNameForm-'+id).hide();
+            $('#name-'+id).html('['+$('#upFormName-'+id).val()+']');
             alert("Name changed!");
         });
+
+        $('input[id*="addSubmitName"]').click(function(){
+            var id = $(this).attr("name");
+            $('#addNameForm-'+id).hide();
+            $('#name-'+id).html('['+$('#addFormName-'+id).val()+']');
+            alert("Name added!");
+        });
+
         $('#tab1').click(function(){
             $('#title').html($(this).html());
         });

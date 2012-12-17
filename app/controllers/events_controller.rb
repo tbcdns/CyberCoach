@@ -33,12 +33,18 @@ class EventsController < ApplicationController
       @teams[:team_nb] = 0
     end
 
+    if Match.where(:event_id => params[:id]).order("level DESC").first.nil?
+    @next_round = "Non available"
+    else
+    @next_round = Match.where(:event_id => params[:id]).order("level DESC").first.date
+    end
+
     @team = Team.new
 
     if Team.where(:event_id => params[:id], :user_id => current_user).first.nil?
       @taking_part = false
     else
-      @taking_part = false # ***should be true***
+      @taking_part = true # ***should be true***
     end
 
     @matches = Match.where(:event_id => params[:id])
@@ -75,6 +81,7 @@ class EventsController < ApplicationController
   end
 
   def tree
+    @skip_top = true
     @skip_footer = true
     @matches = Match.where(:event_id => params[:id])
     @event = Event.find(params[:id])
