@@ -31,6 +31,7 @@ class User < ActiveResource::Base
 
   self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/"
 
+
   schema do
     string 'username', 'realname', 'email', 'password'
     integer 'publicvisible'

@@ -16,6 +16,22 @@ class UsersController < ApplicationController
   end
 
   def show
+
+    # Chercher les pendings requests for partnership
+    begin
+
+
+      User.format = :xml
+      @partnership = User.find(current_user)
+      #puts " ====>> #{@partnership.partnerships.inspect}"
+
+
+      #puts @partnership.partnerships[0].userconfirmed2.inspect
+
+      @partnership = Partnership.find(:all, :params => {:user1 => "Fred", :user2 => "Francis"})
+      puts " ====>> #{@partnership.userconfirmed1}"
+    end
+
     begin
       @user = User.find(params[:id])
       @boxing = Subscription.find(:all, :params => {:sport => "Boxing", :user => @user.username, :start => 0, :size => 500 })
