@@ -66,17 +66,22 @@
       </div>
       <!-- FRIENDS -->
       <div class="tab-pane" id="lB">
-        <h3>Friends</h3><br>
+        <h3>Friends</h3>
         <% @friends.each do |p| %>
-          <%= p %><br>
+          <p><%= p %></p>
         <% end %>
-        <h3>Non confirmed</h3><br>
+        <h3>Non confirmed</h3>
         <% @friends_nonconfirmed.each do |p| %>
-            <%= p %><br>
+            <p><%= p %></p>
         <% end %>
-        <h3>To confirm</h3><br>
+        <h3>To confirm</h3>
         <% @friends_toconfirmed.each do |p| %>
-            <%= p %><br>
+            <p><%= p %>
+              <%= form_tag url_for(:controller => "users", :action => "confirmPartnership", :method => "POST"), :remote => false do %>
+                  <%= hidden_field_tag :partner, p %>
+                  <%= submit_tag "Confirm", :class => "btn btn-primary" %>
+              <% end %>
+            </p>
         <% end %>
 
 

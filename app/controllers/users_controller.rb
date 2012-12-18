@@ -24,7 +24,7 @@ class UsersController < ApplicationController
       @friends_nonconfirmed = []
       @friends_toconfirmed = []
 
-      user = User.find(params[:id])
+      user = User.find(params[:id], :params => {:start => 0, :size => 500})
 
       partnership_id = []
 
@@ -291,5 +291,22 @@ class UsersController < ApplicationController
 
 
   end
+
+  def confirmPartnership
+    begin
+      digest = Base64.encode64(current_user+':'+User_local.where(:name => current_user).first.password)
+      data = {:publicvisible => 2}
+      formated_data = JSON.parse(data.to_json).to_xml(:root => "partnership")
+
+      response = RestClient.put 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/partnerships/'+params[:partner]+';'+current_user, formated_data, :content_type => :xml, :accept => :xml, :Authorization => 'Basic '+digest
+    rescue Exception => e
+      flash[:error] = e.message+"--"+params[:partner]+"--"+formated_data
+      redirect_to '/users/'
+    else
+      flash[:success] = params[:partner]+' confirmed as friend!'
+      redirect_to "/users/"
+    end
+  end
+
 
 end
