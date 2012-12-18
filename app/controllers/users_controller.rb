@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.find(:all)
+    @users = User.find(:all, :params => {:start => 0, :size => 500})
 
     respond_to do |format|
       format.html # index.html.erb
@@ -229,4 +229,23 @@ class UsersController < ApplicationController
     @skip_footer = true
     @skip_top = true
   end
+
+  def createPartnership
+    begin
+      digest = Base64.encode64(current_user+':'+User_local.where(:name => current_user).first.password)
+      data = {:publicvisible => 2}
+      formated_data = JSON.parse(data.to_json).to_xml(:root => "partnership")
+
+      response = RestClient.put 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/partnerships/'+current_user+';'+params[:partner], formated_data, :content_type => :xml, :accept => :xml, :Authorization => 'Basic '+digest
+    rescue Exception => e
+      flash[:error] = e.message+"--"+params[:partner]+"--"+formated_data
+      redirect_to '/users/'
+    else
+      flash[:success] = params[:partner]+' sucessfully added as friend!'
+      redirect_to "/users/"
+    end
+
+
+  end
+
 end

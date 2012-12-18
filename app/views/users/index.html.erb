@@ -1,9 +1,24 @@
 <div class="hero-unit">
 <h1>Users</h1>
-  <p>
+    <table style="margin-right:auto;margin-left:auto;width:450px;">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Add Friend</th>
+        </tr>
+      </thead>
+      <tbody>
 <% @users.each do |user| %>
-      <%= link_to user.username, './'+user.username %>
-      <%= user.uri %><br>
+      <tr>
+        <td><%= link_to user.username, './'+user.username %></td>
+        <td style="text-align:center;">
+          <%= form_tag url_for(:controller => "users", :action => "createPartnership", :method => "POST"), :remote => false do %>
+           <%= hidden_field_tag :partner, user.username %>
+           <%= submit_tag "Add Friend", :class => "btn btn-primary" %>
+           <% end %>
+        </td>
+      </tr>
 <% end %>
-    </p>
+    </tbody>
+    </table>
 </div>
