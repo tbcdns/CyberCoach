@@ -70,6 +70,7 @@
         <% @friends.each do |p| %>
           <p><%= p %></p>
         <% end %>
+        <% if params[:id] == current_user %>
         <h3>Non confirmed</h3>
         <% @friends_nonconfirmed.each do |p| %>
             <p><%= p %></p>
@@ -82,6 +83,7 @@
                   <%= submit_tag "Confirm", :class => "btn btn-primary" %>
               <% end %>
             </p>
+        <% end %>
         <% end %>
 
 

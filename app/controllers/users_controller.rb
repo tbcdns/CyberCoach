@@ -47,6 +47,12 @@ class UsersController < ApplicationController
           else
             @friends.push(partner.user1.username)
           end
+        else
+          if partner.user1.username == params[:id]
+            @friends.push(partner.user2.username)
+          else
+            @friends.push(partner.user1.username)
+          end
         end
       end
       puts @friends_nonconfirmed.inspect
