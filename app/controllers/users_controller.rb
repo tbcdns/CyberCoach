@@ -20,16 +20,44 @@ class UsersController < ApplicationController
     # Chercher les pendings requests for partnership
     begin
 
+      @friends = []
+      @friends_nonconfirmed = []
+      @friends_toconfirmed = []
 
-      User.format = :xml
-      @partnership = User.find(current_user)
-      #puts " ====>> #{@partnership.partnerships.inspect}"
+      user = User.find(params[:id])
+
+      partnership_id = []
+
+      user.partnerships.each do |p|
+        partnership_id.push(p.uri.split("/")[4]) #GET ALL PARTNERSHIPS ID (E.G thibaud;fred )
+        puts "+++++"+p.uri.split("/")[4]
+      end
+
+      partnership_id.each do |id|
+       partner = Partnership.find(id)
+        if partner.user1.username == current_user
+          if !partner.userconfirmed2
+            @friends_nonconfirmed.push(partner.user2.username)
+          else
+            @friends.push(partner.user2.username)
+          end
+        elsif partner.user2.username == current_user
+          if !partner.userconfirmed2
+            @friends_toconfirmed.push(partner.user1.username)
+          else
+            @friends.push(partner.user1.username)
+          end
+        end
+      end
+      puts @friends_nonconfirmed.inspect
+      #puts " ====P>> #{@partnership.partnerships}"
 
 
       #puts @partnership.partnerships[0].userconfirmed2.inspect
-
-      @partnership = Partnership.find(:all, :params => {:user1 => "Fred", :user2 => "Francis"})
-      puts " ====>> #{@partnership.userconfirmed1}"
+      #@partnership = RestClient.get("http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/partnerships/thibaud;thibaud1").to_json
+      #partnership = Partnership.find("thibaud;thibaud1")
+      #partnership_json = ActiveSupport::JSON.decode(partnership.to_json)
+      #puts " ====>>"+ partnership_json["partnership"]["userconfirmed2"].to_s
     end
 
     begin

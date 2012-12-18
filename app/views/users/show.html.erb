@@ -66,7 +66,18 @@
       </div>
       <!-- FRIENDS -->
       <div class="tab-pane" id="lB">
-
+        <h3>Friends</h3><br>
+        <% @friends.each do |p| %>
+          <%= p %><br>
+        <% end %>
+        <h3>Non confirmed</h3><br>
+        <% @friends_nonconfirmed.each do |p| %>
+            <%= p %><br>
+        <% end %>
+        <h3>To confirm</h3><br>
+        <% @friends_toconfirmed.each do |p| %>
+            <%= p %><br>
+        <% end %>
 
 
       </div>

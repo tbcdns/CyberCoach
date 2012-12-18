@@ -27,8 +27,8 @@ class Partnership < ActiveResource::Base
 
   end
 
-  self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/partnerships/:user1;:user2"
-  self.element_name =  ""
+  self.site = "http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/"
+  #self.element_name =  ""
 
   schema do
     string 'name', 'description', 'id'
