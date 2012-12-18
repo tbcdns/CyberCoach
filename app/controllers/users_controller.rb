@@ -6,7 +6,11 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.find(:all, :params => {:start => 0, :size => 500})
+    if params[:start].nil?
+      params[:start] = 0
+      params[:size] = 20
+    end
+    @users = User.find(:all, :params => {:start => params[:start], :size => params[:size]})
 
     respond_to do |format|
       format.html # index.html.erb
@@ -28,6 +32,7 @@ class UsersController < ApplicationController
 
       partnership_id = []
 
+      if user.respond_to?('partnerships')
       user.partnerships.each do |p|
         partnership_id.push(p.uri.split("/")[4]) #GET ALL PARTNERSHIPS ID (E.G thibaud;fred )
         puts "+++++"+p.uri.split("/")[4]
@@ -37,15 +42,33 @@ class UsersController < ApplicationController
        partner = Partnership.find(id)
         if partner.user1.username == current_user
           if !partner.userconfirmed2
-            @friends_nonconfirmed.push(partner.user2.username)
+            if partner.user2.username == params[:id]
+              @friends_nonconfirmed.push(partner.user1.username)
+            else
+              @friends_nonconfirmed.push(partner.user2.username)
+            end
           else
-            @friends.push(partner.user2.username)
+            if partner.user2.username == params[:id]
+              @friends.push(partner.user1.username)
+            else
+              @friends.push(partner.user2.username)
+            end
+
           end
         elsif partner.user2.username == current_user
           if !partner.userconfirmed2
-            @friends_toconfirmed.push(partner.user1.username)
+            if partner.user1.username == params[:id]
+              @friends_toconfirmed.push(partner.user2.username)
+            else
+              @friends_toconfirmed.push(partner.user1.username)
+            end
+
           else
-            @friends.push(partner.user1.username)
+            if partner.user1.username == params[:id]
+              @friends.push(partner.user2.username)
+            else
+              @friends.push(partner.user1.username)
+            end
           end
         else
           if partner.user1.username == params[:id]
@@ -55,7 +78,7 @@ class UsersController < ApplicationController
           end
         end
       end
-      puts @friends_nonconfirmed.inspect
+      end
       #puts " ====P>> #{@partnership.partnerships}"
 
 
@@ -68,6 +91,9 @@ class UsersController < ApplicationController
 
     begin
       @user = User.find(params[:id])
+      if @user.publicvisible == 2
+        @datecreated = Time.at(@user.datecreated/1000)
+      end
       @boxing = Subscription.find(:all, :params => {:sport => "Boxing", :user => @user.username, :start => 0, :size => 500 })
       @soccer = Subscription.find(:all, :params => {:sport => "Soccer", :user => @user.username, :start => 0, :size => 500 })
       @cycling = Subscription.find(:all, :params => {:sport => "Cycling", :user => @user.username, :start => 0, :size => 500 })
@@ -103,7 +129,7 @@ class UsersController < ApplicationController
       end
 
     rescue Exception => e
-      flash[:error] = "Error : "+e.message
+      flash[:error] = "Error1 : "+e.message
       redirect_to '/users/'
     end
   end
@@ -130,15 +156,16 @@ class UsersController < ApplicationController
     #@user = User.find(params[:id])
     #@user.destroy
     begin
-      @user = User.find(params[:id])
-      digest = Base64.encode64(params[:id]+':'+User.find(params[:id]).password)
-      RestClient.delete 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+params[:id], :Authorization => 'Basic '+digest
+      @user = User.find(current_user)
+      digest = Base64.encode64(current_user+':'+User_local.where(:name => current_user).first.password)
+      RestClient.delete 'http://diufvm31.unifr.ch:8090/CyberCoachServer/resources/users/'+current_user, :Authorization => 'Basic '+digest
       rescue Exception => e
         flash[:error] = 'Error : '+e.message
         redirect_to "/users/"
       else
-        flash[:success] = 'User '+params[:id]+' sucessfully deleted'
-        redirect_to "/users/"
+        flash[:success] = 'User '+current_user+' sucessfully deleted'
+        sign_out
+        redirect_to "/"
     end
 
 
@@ -310,7 +337,7 @@ class UsersController < ApplicationController
       redirect_to '/users/'
     else
       flash[:success] = params[:partner]+' confirmed as friend!'
-      redirect_to "/users/"
+      redirect_to "/users/"+current_user
     end
   end
 

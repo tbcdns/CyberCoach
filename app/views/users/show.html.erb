@@ -53,38 +53,67 @@
     <div class="tab-content">
       <!-- INFORMATIONS -->
       <div class="tab-pane active" id="lA">
-
+      <% if @friends.include?(current_user) %>
+      <div class="alert alert-info" style="text-align:center;">You're friend with <%= params[:id] %></div>
+      <% elsif  @friends_nonconfirmed.include?(current_user) %>
+      <div class="alert alert-warning" style="text-align:center;">Friend request sent</div>
+      <% elsif @friends_toconfirmed.include?(current_user) %>
+      <div class="alert alert-info" style="text-align:center;"><%= params[:id] %> sent you a friend request</div>
+      <% end %>
         <% if @user.publicvisible.equal?(2) %>
-            <p>
-              Email : <%= @user.email %><br>
-              Real name : <%= @user.realname %><br>
-              Password : <%= @user.password %>
+            <p>Real name : <%= @user.realname %></p>
+            <p>Email : <%= @user.email %></p>
+            <p>User since : <%= @datecreated.day.to_s+"-"+@datecreated.month.to_s+"-"+@datecreated.year.to_s %></p>
         <% end %>
         <br>
-        <%= link_to "Delete", @user.username, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'btn btn-large btn-primary'  %>
+        <% if current_user == params[:id] %>
+        <%= link_to "Delete my account", @user.username, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'btn btn-danger'  %>
+        <% else %>
+            <% if !(@friends.include?(current_user) || @friends_nonconfirmed.include?(current_user) || @friends_toconfirmed.include?(current_user)) %>
+                <%= form_tag url_for(:controller => "users", :action => "createPartnership", :method => "POST"), :remote => false do %>
+                    <%= hidden_field_tag :partner, params[:id] %>
+                    <%= submit_tag "Add Friend", :class => "btn btn-primary" %>
+                <% end %>
+            <% end %>
+        <% end %>
+
         </p>
       </div>
       <!-- FRIENDS -->
-      <div class="tab-pane" id="lB">
-        <h3>Friends</h3>
+      <div class="tab-pane" id="lB" style="text-align:left;">
+        <table style="margin-left:auto;margin-right:auto;width:60%;">
+          <thead>
+          <th><h4>Name</h4></th>
+          <th></th>
+          </thead>
+          <tbody>
         <% @friends.each do |p| %>
-          <p><%= p %></p>
+          <tr>
+          <td><p><%= link_to p, "/users/"+p %></p></td>
+          </tr>
         <% end %>
-        <% if params[:id] == current_user %>
-        <h3>Non confirmed</h3>
+
+
         <% @friends_nonconfirmed.each do |p| %>
-            <p><%= p %></p>
+          <tr>
+            <td><p><a href="/users/<%= p %>" rel="tooltip" class="tltip" data-placement="right" title="waiting confirmation" style="color:#ff8c00;"><%= p %></a></p></td>
+          </tr>
         <% end %>
-        <h3>To confirm</h3>
+
         <% @friends_toconfirmed.each do |p| %>
-            <p><%= p %>
+          <tr>
+            <td><p><a href="/users/<%= p %>" rel="tooltip" class="tltip" data-placement="left" title="Need confirmation" style="color:#006400;"><%= p %></a></p></td>
+                  <td>
               <%= form_tag url_for(:controller => "users", :action => "confirmPartnership", :method => "POST"), :remote => false do %>
                   <%= hidden_field_tag :partner, p %>
                   <%= submit_tag "Confirm", :class => "btn btn-primary" %>
               <% end %>
-            </p>
+            </td>
+          </tr>
         <% end %>
-        <% end %>
+
+        </tbody>
+        </table>
 
 
       </div>
@@ -96,7 +125,7 @@
               No entry
           <% else %>
           <% @boxing_entries.each do |b| %>
-              <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Round duration : <%= b['roundduration'] %></li>
+              <li><%= Time.at(b['entrydate']/1000).day.to_s+"-"+Time.at(b['entrydate']/1000).month.to_s+"-"+Time.at(b['entrydate']/1000).year.to_s %> in <%= b['entrylocation'] %>. Round duration : <%= b['roundduration'] %></li>
           <% end %>
          <% end %>
         </ul>
@@ -107,7 +136,7 @@
               No entry
         <% else %>
           <% @cycling_entries.each do |b| %>
-          <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Bicycle type : <%= b['bicycletype'] %>, course type <%= b['coursetype'] %></li>
+          <li><%= Time.at(b['entrydate']/1000).day.to_s+"-"+Time.at(b['entrydate']/1000).month.to_s+"-"+Time.at(b['entrydate']/1000).year.to_s %> in <%= b['entrylocation'] %>. Bicycle type : <%= b['bicycletype'] %>, course type <%= b['coursetype'] %></li>
           <% end %>
         <% end %>
         </ul>
@@ -118,7 +147,7 @@
               No entry
         <% else %>
            <% @soccer_entries.each do |b| %>
-           <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
+           <li><%= Time.at(b['entrydate']/1000).day.to_s+"-"+Time.at(b['entrydate']/1000).month.to_s+"-"+Time.at(b['entrydate']/1000).year.to_s %> in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
            <% end %>
         <% end %>
         </ul>
@@ -129,7 +158,7 @@
               No entry
           <% else %>
               <% @running_entries.each do |b| %>
-                  <li><%= Time.at (b['entrydate'])%> in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
+                  <li><%= Time.at(b['entrydate']/1000).day.to_s+"-"+Time.at(b['entrydate']/1000).month.to_s+"-"+Time.at(b['entrydate']/1000).year.to_s %> in <%= b['entrylocation'] %>. Duration : <%= b['entryduration'] %></li>
               <% end %>
           <% end %>
         </ul>
@@ -157,5 +186,7 @@ $('#tab4').click(function(){
   $('#title').html($(this).html());
   $("#lD").load("/users/stats/<%= params[:id] %>");
 });
+
+$('.tltip').tooltip();
 
 </script>

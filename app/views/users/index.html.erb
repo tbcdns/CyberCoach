@@ -21,4 +21,14 @@
 <% end %>
     </tbody>
     </table>
+  <div class="pagination" style="margin-left:auto;margin-right:auto;width:100%;text-align: center;">
+    <% if params[:start].nil? then params[:start] = 0 end %>
+    <ul>
+      <% if params[:start].to_i > 0 %>
+      <li><a href="/users/?start=<%= (params[:start].to_i-20).to_s %>&size=20">Prev</a></li>
+      <% end %>
+
+      <li><a href="/users/?start=<%= (params[:start].to_i+20).to_s %>&size=20">Next</a></li>
+    </ul>
+  </div>
 </div>

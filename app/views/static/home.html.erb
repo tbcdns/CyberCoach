@@ -88,9 +88,10 @@
         </div>
       </div><br>
 
-
+      <%= link_to 'All users', '/users/', :class => 'btn btn-large btn-primary' %>
       <%= link_to 'Create new event', '/events/new', :class => 'btn btn-large btn-primary' %>
       <%= link_to 'All events', '/events/', :class => 'btn btn-large btn-primary' %>
+
   <% else %>
   <p style="text-align: center;"><%= image_tag('foot.jpg', :alt => '', :id => 'HomeImg') %></p>
   <p style="text-align: center;">The new social platform to organize your sport events.</p>
