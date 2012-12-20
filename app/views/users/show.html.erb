@@ -174,16 +174,16 @@
 </div>
 <script type="text/javascript">
 $('#tab1').click(function(){
-$('#title').html($(this).html());
+$('#title').html("Informations");
 });
 $('#tab2').click(function(){
-$('#title').html($(this).html());
+$('#title').html("Friends");
 });
 $('#tab3').click(function(){
-$('#title').html($(this).html());
+$('#title').html("Results");
 });
 $('#tab4').click(function(){
-  $('#title').html($(this).html());
+  $('#title').html("Statistics");
   $("#lD").load("/users/stats/<%= params[:id] %>");
 });
 
