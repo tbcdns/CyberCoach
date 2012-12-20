@@ -75,8 +75,8 @@
       <li><a href="#Soccer" data-toggle="tab" id="tab4">Soccer</a></li>
     </ul>
     <div class="tab-content">
-       <% @sports.each do |name| %>
-          <div class="tab-pane active" id="<%= name %>">
+
+          <div class="tab-pane active" id="Boxing">
             <table class='table'>
               <thead>
               <tr>
@@ -88,7 +88,7 @@
               </tr>
               </thead>
               <tbody>
-              <% Event.where(:sport_id => name).each do |event| %>
+              <% Event.where(:sport_id => "Boxing").each do |event| %>
                   <% if event.close == true
                        state = 'error'
                      end
@@ -104,7 +104,94 @@
               </tbody>
             </table>
           </div>
-       <% end %>
+
+      <div class="tab-pane active" id="Cycling">
+        <table class='table'>
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Players/Team</th>
+            <th>Teams</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% Event.where(:sport_id => "Cycling").each do |event| %>
+              <% if event.close == true
+                   state = 'error'
+                 end
+              %>
+              <tr class="<%= state %>" onmouseover="bold(<%=event.id %>)" onclick="location.href='<%=url_for(:action => 'show', :id =>  event.id) %>'" onmouseout="normal(<%=event.id %>)" id="<%=event.id %>">
+                <td><%= event.name %></td>
+                <td><%= event.description %></td>
+                <td><%= event.location %></td>
+                <td><%= event.nb_players %></td>
+                <td><%= event.teams.count %>/<%= event.nb_teams %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane active" id="Running">
+        <table class='table'>
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Players/Team</th>
+            <th>Teams</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% Event.where(:sport_id => "Running").each do |event| %>
+              <% if event.close == true
+                   state = 'error'
+                 end
+              %>
+              <tr class="<%= state %>" onmouseover="bold(<%=event.id %>)" onclick="location.href='<%=url_for(:action => 'show', :id =>  event.id) %>'" onmouseout="normal(<%=event.id %>)" id="<%=event.id %>">
+                <td><%= event.name %></td>
+                <td><%= event.description %></td>
+                <td><%= event.location %></td>
+                <td><%= event.nb_players %></td>
+                <td><%= event.teams.count %>/<%= event.nb_teams %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane active" id="Soccer">
+        <table class='table'>
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Players/Team</th>
+            <th>Teams</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% Event.where(:sport_id => "Soccer").each do |event| %>
+              <% if event.close == true
+                   state = 'error'
+                 end
+              %>
+              <tr class="<%= state %>" onmouseover="bold(<%=event.id %>)" onclick="location.href='<%=url_for(:action => 'show', :id =>  event.id) %>'" onmouseout="normal(<%=event.id %>)" id="<%=event.id %>">
+                <td><%= event.name %></td>
+                <td><%= event.description %></td>
+                <td><%= event.location %></td>
+                <td><%= event.nb_players %></td>
+                <td><%= event.teams.count %>/<%= event.nb_teams %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
  <div style='width:95px;text-align: center; background-color: #F2DEDE;margin-top:20px;margin-left:700px;'>Closed event</div>

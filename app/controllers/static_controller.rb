@@ -9,7 +9,7 @@ class StaticController < ApplicationController
     @my_next_matches = []
     my_teams.each do |event|
       if !Match.where("event_id = "+event.event_id.to_s+" AND ISNULL(winning_team_nb)").order("level DESC").first.nil?
-        if Match.where(:event_id => event.event_id).order("level DESC").first.date > Time.now.to_date
+        if Match.where(:event_id => event.event_id).order("level DESC").first.date >= Time.now.to_date
           match_infos = Match.where(:event_id => event.event_id).order("level DESC").first
         @my_next_matches.push([match_infos.event_id, match_infos.date, match_infos.level])
           end
