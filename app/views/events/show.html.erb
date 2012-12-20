@@ -138,7 +138,7 @@
           <li>Sport : <%= @event.sport_id %></li>
           <li>Name : <%= @event.name %></li>
           <li>Description : <%= @event.description %></li>
-          <li>Players : <%=  %>/<%= @event.nb_players %></li>
+          <li>Players per team : <%=  %><%= @event.nb_players %></li>
           <li>
             <% if !@teams.empty? %>
                 <a href="#myModal" role="button" data-toggle="modal">Teams : <%= @teams.order(:team_nb).reverse.first.team_nb %>/<%= @event.nb_teams %></a>

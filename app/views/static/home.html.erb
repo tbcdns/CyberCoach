@@ -75,7 +75,7 @@
            <% @my_next_matches.each do |match| %>
               <% event = Event.find(match[0]) %>
               <tr>
-               <td><%= event.name %></td><td><%= event.sport_id %></td><td><%= match[1] %></td><td><%= match[2] %></td>
+               <td><%= link_to event.name, "/events/"+event.id.to_s %></td><td><%= event.sport_id %></td><td><%= match[1] %></td><td><%= match[2] %></td>
              </tr>
             <% end %>
              </table>

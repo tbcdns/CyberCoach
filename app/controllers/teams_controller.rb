@@ -20,6 +20,7 @@ class TeamsController < ApplicationController
 
     if free_space == 0
       team_nb += 1
+      free_space = nb_players
     end
 
     @team = Team.new(:event_id => params[:team][:event_id], :user_id => current_user, :team_nb => team_nb)
