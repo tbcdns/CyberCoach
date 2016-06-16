@@ -1,7 +1,7 @@
 CyberCoach
 ==========
-University of Fribourg 2013
-Ruby on Rail Project
+University of Fribourg 2013<br>
+Ruby on Rail Project<br>
 Thibaud Chardonnens, Frédérik Ganninger
 
 Description
